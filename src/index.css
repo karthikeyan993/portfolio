@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-[#FAFAFA] via-[#F5F3FF] to-[#E8E4F9];
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-xl border border-white/50 shadow-lg;
+  }
+  
+  .glass-card-hover {
+    @apply glass-card hover:bg-white/90 hover:-translate-y-1 transition-all duration-300 cursor-pointer;
+  }
+  
+  .glass-button {
+    @apply px-6 py-3 rounded-full font-medium transition-all duration-300 backdrop-blur-md border border-white/50 shadow-lg;
+  }
+  
+  .glass-button-primary {
+    @apply glass-button bg-gradient-to-r from-[#8B5CF6] to-[#06B6D4] text-white hover:shadow-xl hover:scale-105;
+  }
+  
+  .glass-button-secondary {
+    @apply glass-button border-[#8B5CF6]/30 text-gray-700 hover:bg-white/90;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-[#8B5CF6] via-[#06B6D4] to-[#F97316] bg-clip-text text-transparent;
+  }
+  
+  .orb {
+    @apply absolute rounded-full blur-2xl opacity-30 pointer-events-none;
+  }
+
+  .tech-badge {
+    @apply glass-card-hover px-4 py-3 rounded-xl flex items-center gap-2 transition-all duration-300;
+  }
+
+  .social-circle {
+    @apply glass-card hover:bg-white/90 hover:scale-110 transition-all duration-300 w-14 h-14 rounded-full flex items-center justify-center cursor-pointer;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+}
+
+@keyframes gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-white/20 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full hover:bg-primary/50 transition-colors;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
