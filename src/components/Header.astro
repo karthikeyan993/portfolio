@@ -1,0 +1,148 @@
+---
+import ButtonLink from '@/components/ButtonLink.astro';
+import Icon from '@/components/Icon.astro';
+import type { Locale, NavItem, SiteContent } from '@/data/site-content.schema';
+import { defaultLocale, getLocalePath } from '@/data/site-content';
+
+interface Props {
+  content: SiteContent;
+  locale: Locale;
+  currentPath: string;
+  resumeAvailable?: boolean;
+}
+
+const { content, locale, currentPath, resumeAvailable = false } = Astro.props;
+const isHome = currentPath === '/' || currentPath === '/de/';
+const alternateLocale: Locale = locale === 'en' ? 'de' : 'en';
+const alternatePath = getLocalePath(alternateLocale);
+const navItems: NavItem[] = [...content.nav, { id: 'blog', label: content.common.blogLabel }];
+const localizeAnchor = (id: string) => (isHome ? `#${id}` : `${getLocalePath(locale)}#${id}`);
+const navHref = (item: NavItem) => (item.id === 'blog' ? '/blog/' : localizeAnchor(item.id));
+const ctaHref = content.hero.ctaHref.startsWith('#')
+  ? localizeAnchor(content.hero.ctaHref.slice(1))
+  : content.hero.ctaHref;
+const blogActive = currentPath.startsWith('/blog/');
+---
+
+<header class="sticky top-0 z-40 border-b border-border bg-bg/95 backdrop-blur-sm" data-header>
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
+    <a href={getLocalePath(locale)} class="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-text">
+      {content.hero.name}
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
+      {navItems.map((item) => (
+        <a
+          href={navHref(item)}
+          class:list={[
+            'px-3 py-2 text-sm font-medium text-text-muted transition-colors hover:text-text',
+            item.id === 'blog' && blogActive && 'text-brand-primary',
+          ]}
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-2 md:flex">
+      {resumeAvailable ? (
+        <ButtonLink href={content.resume.href} variant="ghost" size="sm" download>
+          {content.resume.headerLabel}
+        </ButtonLink>
+      ) : null}
+      <a
+        href={alternatePath}
+        class="button-ghost border border-border"
+        data-locale-link
+        data-locale={alternateLocale}
+        aria-label={content.common.languageLabel}
+      >
+        {alternateLocale.toUpperCase()}
+      </a>
+      <button
+        type="button"
+        class="button-ghost border border-border"
+        data-theme-toggle
+        aria-label={content.common.themeDarkLabel}
+      >
+        <span data-theme-icon="dark"><Icon name="moon" size={16} /></span>
+        <span data-theme-icon="light" hidden><Icon name="sun" size={16} /></span>
+      </button>
+      <ButtonLink href={ctaHref} size="sm">{content.hero.ctaLabel}</ButtonLink>
+    </div>
+
+    <button
+      type="button"
+      class="button-secondary px-3 py-2 md:hidden"
+      data-menu-toggle
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label={content.common.menuOpenLabel}
+    >
+      <span data-menu-icon="open"><Icon name="menu" size={18} /></span>
+      <span data-menu-icon="close" hidden><Icon name="x" size={18} /></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-border bg-bg px-4 py-4 md:hidden" data-mobile-menu>
+    <nav class="mx-auto flex max-w-6xl flex-col gap-1" aria-label="Mobile primary">
+      {navItems.map((item) => (
+        <a href={navHref(item)} class="py-2 text-sm font-medium text-text-muted hover:text-text">
+          {item.label}
+        </a>
+      ))}
+      <div class="mt-3 flex flex-wrap gap-2 border-t border-border pt-4">
+        {resumeAvailable ? (
+          <ButtonLink href={content.resume.href} variant="secondary" size="sm" download>
+            {content.resume.headerLabel}
+          </ButtonLink>
+        ) : null}
+        <a href={alternatePath} class="button-secondary px-3 py-2 text-xs" data-locale-link data-locale={alternateLocale}>
+          {alternateLocale.toUpperCase()}
+        </a>
+        <button type="button" class="button-secondary px-3 py-2 text-xs" data-theme-toggle>
+          {content.common.themeDarkLabel}
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script is:inline define:vars={{ defaultLocale }}>
+  const localeLinks = document.querySelectorAll('[data-locale-link]');
+  localeLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      localStorage.setItem('locale', link.dataset.locale || defaultLocale);
+    });
+  });
+
+  const menuToggle = document.querySelector('[data-menu-toggle]');
+  const mobileMenu = document.querySelector('[data-mobile-menu]');
+  const openIcon = document.querySelector('[data-menu-icon="open"]');
+  const closeIcon = document.querySelector('[data-menu-icon="close"]');
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!isOpen));
+    mobileMenu?.classList.toggle('hidden', isOpen);
+    openIcon?.toggleAttribute('hidden', !isOpen);
+    closeIcon?.toggleAttribute('hidden', isOpen);
+  });
+
+  const applyThemeIcon = () => {
+    const isDark = document.documentElement.classList.contains('dark');
+    document.querySelectorAll('[data-theme-icon="dark"]').forEach((icon) => icon.toggleAttribute('hidden', isDark));
+    document.querySelectorAll('[data-theme-icon="light"]').forEach((icon) => icon.toggleAttribute('hidden', !isDark));
+  };
+
+  document.querySelectorAll('[data-theme-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+      document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+      localStorage.setItem('theme', nextTheme);
+      applyThemeIcon();
+    });
+  });
+
+  applyThemeIcon();
+</script>

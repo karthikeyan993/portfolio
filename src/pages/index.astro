@@ -1,0 +1,20 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import HomePage from '@/components/HomePage.astro';
+import { getSiteContent } from '@/data/site-content';
+import { hasPublicResume } from '@/lib/resume';
+
+const content = getSiteContent('en');
+const resumeAvailable = hasPublicResume();
+---
+
+<BaseLayout
+  title={content.seo.title}
+  description={content.seo.description}
+  currentPath={Astro.url.pathname}
+  locale="en"
+  content={content}
+  enableLocaleRedirect
+>
+  <HomePage content={content} resumeAvailable={resumeAvailable} />
+</BaseLayout>

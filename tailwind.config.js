@@ -1,28 +1,38 @@
+import typography from '@tailwindcss/typography';
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./src/**/*.{astro,html,js,ts,jsx,tsx,md,mdx}'],
+  darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        heading: ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        body: ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+      },
       colors: {
-        primary: '#8B5CF6',
-        secondary: '#06B6D4',
-        accent: '#F97316',
+        bg: 'hsl(var(--bg))',
+        surface: 'hsl(var(--surface))',
+        elevated: 'hsl(var(--elevated))',
+        border: 'hsl(var(--border))',
+        text: {
+          DEFAULT: 'hsl(var(--text))',
+          muted: 'hsl(var(--text-muted))',
+        },
+        brand: {
+          primary: 'hsl(var(--brand-primary))',
+          accent: 'hsl(var(--brand-accent))',
+        },
       },
-      animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'float-delayed': 'float 8s ease-in-out infinite',
-        'float-slow': 'float 10s ease-in-out infinite',
+      borderRadius: {
+        xl: 'var(--radius-xl)',
+        '2xl': 'var(--radius-2xl)',
       },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-20px)' },
-        }
-      }
+      boxShadow: {
+        panel: 'var(--shadow-panel)',
+      },
     },
   },
-  plugins: [],
-}
+  plugins: [typography],
+};

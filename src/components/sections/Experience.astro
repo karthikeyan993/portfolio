@@ -1,0 +1,36 @@
+---
+import Icon from '@/components/Icon.astro';
+import Section from '@/components/Section.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import type { ExperienceContent } from '@/data/site-content.schema';
+
+interface Props {
+  content: ExperienceContent;
+  tinted?: boolean;
+}
+
+const { content, tinted = false } = Astro.props;
+---
+
+<Section id="experience" tinted={tinted}>
+  <SectionHeading eyebrow={content.eyebrow} title={content.title} />
+
+  <div class="space-y-4">
+    {content.items.map((experienceItem) => (
+      <article class="panel grid gap-5 p-6 md:grid-cols-[12rem_1fr]">
+        <div>
+          <span class="icon-frame mb-4"><Icon name="briefcase" size={18} /></span>
+          <p class="font-mono text-xs uppercase tracking-[0.18em] text-text-muted">{experienceItem.period}</p>
+          <p class="mt-2 text-sm text-text-muted">{experienceItem.location}</p>
+        </div>
+        <div>
+          <h3 class="font-heading text-2xl font-semibold tracking-[-0.03em] text-text">{experienceItem.role}</h3>
+          <p class="mt-1 font-semibold text-brand-primary">{experienceItem.company}</p>
+          <ul class="mt-5 space-y-2 text-sm leading-6 text-text-muted">
+            {experienceItem.bullets.map((bullet) => <li class="border-t border-border pt-2">{bullet}</li>)}
+          </ul>
+        </div>
+      </article>
+    ))}
+  </div>
+</Section>

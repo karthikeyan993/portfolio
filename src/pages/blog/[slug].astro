@@ -1,0 +1,76 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Icon from '@/components/Icon.astro';
+import Prose from '@/components/Prose.astro';
+import { getSiteContent } from '@/data/site-content';
+import type { BlogPost } from '@/lib/blog';
+import { formatPostDate, getLanguageLabel, getReadingTime, isPublishedPost, sortPostsByPublishedDate } from '@/lib/blog';
+
+export async function getStaticPaths() {
+  const posts = sortPostsByPublishedDate((await getCollection('blog')).filter(isPublishedPost));
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const content = getSiteContent('en');
+const { post } = Astro.props as { post: BlogPost };
+const { Content } = await render(post);
+const title = `${post.data.title} | ${content.hero.name}`;
+---
+
+<BaseLayout title={title} description={post.data.description} currentPath={Astro.url.pathname} ogType="article" locale="en" content={content}>
+  <article class="px-4 py-20 md:py-28">
+    <div class="mx-auto max-w-3xl">
+      <a href="/blog/" class="button-ghost mb-8 gap-2 px-0">
+        <Icon name="arrow-left" size={16} /> {content.common.backToBlogLabel}
+      </a>
+
+      <header>
+        <div class="flex flex-wrap items-center gap-2 text-sm text-text-muted">
+          <time datetime={post.data.publishedAt.toISOString()}>{formatPostDate(post.data.publishedAt)}</time>
+          <span aria-hidden="true">/</span>
+          <span>{getReadingTime(post.body ?? '', content.common.readTimeSuffix)}</span>
+          <span aria-hidden="true">/</span>
+          <span class="tag">{getLanguageLabel(post.data.language)}</span>
+          {post.data.updatedAt ? (
+            <>
+              <span aria-hidden="true">/</span>
+              <span>Updated {formatPostDate(post.data.updatedAt)}</span>
+            </>
+          ) : null}
+        </div>
+
+        <h1 class="mt-6 font-heading text-5xl font-semibold leading-tight tracking-[-0.05em] text-text md:text-7xl">
+          {post.data.title}
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-text-muted">{post.data.description}</p>
+
+        <div class="mt-8 flex flex-wrap gap-2">
+          {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
+        </div>
+      </header>
+
+      {post.data.cover ? (
+        <img src={post.data.cover} alt="" class="mt-10 w-full border border-border" />
+      ) : null}
+
+      <div class="panel mt-10 p-6 md:p-10">
+        <Prose>
+          <Content />
+        </Prose>
+      </div>
+
+      <div class="panel mt-8 p-6">
+        <p class="font-heading text-xl font-semibold text-text">Want to talk about this?</p>
+        <p class="mt-2 text-sm leading-6 text-text-muted">
+          Send a note from the contact section or connect through the social links below.
+        </p>
+        <a href="/#contact" class="mt-4 inline-flex text-sm font-semibold text-brand-primary hover:text-text">Go to contact</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

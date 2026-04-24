@@ -1,0 +1,27 @@
+---
+import Section from '@/components/Section.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import type { TechStackContent } from '@/data/site-content.schema';
+
+interface Props {
+  content: TechStackContent;
+  tinted?: boolean;
+}
+
+const { content, tinted = false } = Astro.props;
+---
+
+<Section id="tech-stack" tinted={tinted}>
+  <SectionHeading eyebrow={content.eyebrow} title={content.title} />
+
+  <div class="grid gap-4 md:grid-cols-3">
+    {content.categories.map((category) => (
+      <div class="panel p-6">
+        <h3 class="font-heading text-xl font-semibold tracking-[-0.03em] text-text">{category.title}</h3>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {category.techs.map((tech) => <span class="tag">{tech}</span>)}
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>

@@ -1,0 +1,219 @@
+{
+  "locale": "de",
+  "seo": {
+    "title": "Alex Chen | Full Stack Engineer",
+    "description": "Full-Stack-Engineer für schnelle, zuverlässige Produktoberflächen und pragmatische Websysteme.",
+    "footerNote": "Als statische Astro-Seite mit Performance-Fokus gebaut."
+  },
+  "nav": [
+    { "id": "about", "label": "Profil" },
+    { "id": "tech-stack", "label": "Stack" },
+    { "id": "experience", "label": "Erfahrung" },
+    { "id": "projects", "label": "Projekte" },
+    { "id": "contact", "label": "Kontakt" }
+  ],
+  "hero": {
+    "greeting": "Hallo, ich bin",
+    "name": "Alex Chen",
+    "initials": "AC",
+    "titles": ["Full Stack Engineer", "Performance-orientierter Entwickler", "Deutsch B1"],
+    "summary": "Ich baue zuverlässige Webprodukte mit Fokus auf Klarheit, schnelle Oberflächen und wartbare Systeme. Ich lebe in San Francisco und bin offen für fokussierte Produktentwicklung.",
+    "ctaLabel": "Projekte ansehen",
+    "ctaHref": "#projects",
+    "resumeLabel": "Lebenslauf herunterladen",
+    "socialLinks": [
+      { "platform": "github", "href": "https://github.com", "label": "GitHub" },
+      { "platform": "linkedin", "href": "https://www.linkedin.com", "label": "LinkedIn" },
+      { "platform": "mail", "href": "mailto:alex@example.com", "label": "E-Mail" }
+    ]
+  },
+  "about": {
+    "eyebrow": "Profil",
+    "title": "Engineer für Produktteams, die Geschwindigkeit und Qualität ernst nehmen.",
+    "paragraphs": [
+      "Ich arbeite über Frontend, Backend und Deployment hinweg und bevorzuge kleine, gut getestete Systeme, die verständlich bleiben, wenn sie wachsen.",
+      "Mein Fokus liegt auf praktischer Entwicklung: schnelle Seiten, durchdachte UX-Details, klare Datenflüsse und Code, den andere Entwickler sicher ändern können."
+    ],
+    "highlights": [
+      {
+        "icon": "user",
+        "label": "3+ Jahre Erfahrung",
+        "description": "Produktive Web-Apps und Produktoberflächen"
+      },
+      {
+        "icon": "mapPin",
+        "label": "San Francisco, CA",
+        "description": "Offen für Remote- und Hybrid-Teams"
+      },
+      {
+        "icon": "languages",
+        "label": "Englisch & Deutsch (B1)",
+        "description": "Sicher in internationalen Teams"
+      }
+    ]
+  },
+  "techStack": {
+    "eyebrow": "Werkzeuge",
+    "title": "Ein Stack für langlebige Produktentwicklung.",
+    "categories": [
+      {
+        "title": "Frontend",
+        "techs": ["React", "Astro", "TypeScript", "Tailwind CSS", "Web Performance"]
+      },
+      {
+        "title": "Backend",
+        "techs": ["Node.js", "Express", "PostgreSQL", "Redis", "GraphQL"]
+      },
+      {
+        "title": "Delivery",
+        "techs": ["Netlify", "Docker", "CI/CD", "Testing", "Observability"]
+      }
+    ]
+  },
+  "experience": {
+    "eyebrow": "Erfahrung",
+    "title": "Rollen und Wirkung.",
+    "items": [
+      {
+        "company": "TechCorp",
+        "role": "Senior Frontend Engineer",
+        "period": "2022 - Heute",
+        "location": "San Francisco, CA",
+        "bullets": [
+          "Frontend-Architektur für eine SaaS-Plattform mit 50K+ Nutzern geleitet.",
+          "Component Library aufgebaut und Performance um 40% verbessert."
+        ]
+      },
+      {
+        "company": "StartupXYZ",
+        "role": "Full Stack Developer",
+        "period": "2021 - 2022",
+        "location": "Remote",
+        "bullets": [
+          "End-to-End-Features für ein Fintech-Produkt entwickelt.",
+          "Realtime-Datenpipelines und responsive Dashboards umgesetzt."
+        ]
+      },
+      {
+        "company": "WebAgency",
+        "role": "Junior Developer",
+        "period": "2020 - 2021",
+        "location": "San Jose, CA",
+        "bullets": [
+          "Kundenwebsites und interne Tools gebaut.",
+          "Features mit React, Node.js und Cloud-Deployments geliefert."
+        ]
+      }
+    ]
+  },
+  "featuredProject": {
+    "eyebrow": "Ausgewählte Arbeit",
+    "sectionTitle": "Ausgewähltes Projekt",
+    "slug": "clouddash-analytics",
+    "title": "CloudDash Analytics",
+    "summary": "Ein Echtzeit-Analytics-Dashboard für Cloud-Infrastruktur-Monitoring. Gebaut mit React, D3.js und WebSocket für Live-Daten. Verarbeitet 10K+ Datenpunkte pro Sekunde mit flüssigen Visualisierungen.",
+    "tags": ["React", "D3.js", "WebSocket", "Node.js", "PostgreSQL"],
+    "links": {
+      "live": "#",
+      "source": "#"
+    },
+    "featured": true,
+    "badge": "Featured",
+    "previewLabel": "Projektvorschau"
+  },
+  "projects": {
+    "eyebrow": "Projekte",
+    "title": "Kleinere Builds und Experimente.",
+    "items": [
+      {
+        "slug": "devflow",
+        "title": "DevFlow",
+        "summary": "Ein Produktivitätstool für Entwickler mit GitHub-Integration, Task-Tracking und automatisierten Workflows.",
+        "tags": ["Next.js", "Prisma", "tRPC"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      },
+      {
+        "slug": "linguachat",
+        "title": "LinguaChat",
+        "summary": "KI-gestützte Sprachlern-App mit Echtzeit-Konversationstraining und Fortschrittsverfolgung.",
+        "tags": ["React", "OpenAI", "Firebase"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      },
+      {
+        "slug": "pixelforge",
+        "title": "PixelForge",
+        "summary": "Browserbasierter Bildeditor mit Ebenen, Filtern und kollaborativer Bearbeitung.",
+        "tags": ["Canvas API", "WebRTC", "Rust/WASM"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      }
+    ]
+  },
+  "writing": {
+    "eyebrow": "Writing",
+    "title": "Notizen aus der Entwicklung.",
+    "description": "Kurze Texte über Architektur, Performance, Hosting und praktische Produktentwicklung.",
+    "readAllLabel": "Alle Beiträge lesen"
+  },
+  "resume": {
+    "href": "/resume.pdf",
+    "label": "Lebenslauf herunterladen",
+    "headerLabel": "Lebenslauf",
+    "note": "PDF, für öffentliches Teilen bereinigt"
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "title": "Haben Sie ein konkretes Projekt oder eine Rolle im Blick?",
+    "description": "Schicken Sie mir eine kurze Nachricht. Ich lese jede Nachricht und antworte, wenn es fachlich passt.",
+    "email": "alex@example.com",
+    "location": "San Francisco, CA",
+    "formEnabled": true,
+    "submitLabel": "Nachricht senden",
+    "successTitle": "Nachricht gesendet",
+    "successMessage": "Danke für Ihre Nachricht. Ich melde mich bald zurück.",
+    "nameLabel": "Name",
+    "emailLabel": "E-Mail",
+    "messageLabel": "Nachricht",
+    "messagePlaceholder": "Erzählen Sie kurz, was Sie bauen oder wofür Sie einstellen...",
+    "links": [
+      { "platform": "email", "href": "mailto:alex@example.com", "label": "E-Mail" },
+      { "platform": "linkedin", "href": "https://www.linkedin.com", "label": "LinkedIn" },
+      { "platform": "github", "href": "https://github.com", "label": "GitHub" }
+    ],
+    "infoCards": [
+      {
+        "icon": "mail",
+        "label": "E-Mail",
+        "value": "alex@example.com",
+        "href": "mailto:alex@example.com"
+      },
+      {
+        "icon": "mapPin",
+        "label": "Standort",
+        "value": "San Francisco, CA"
+      }
+    ]
+  },
+  "common": {
+    "blogLabel": "Blog",
+    "languageLabel": "Sprache",
+    "themeLightLabel": "Hell",
+    "themeDarkLabel": "Dunkel",
+    "menuOpenLabel": "Menü öffnen",
+    "menuCloseLabel": "Menü schließen",
+    "backToBlogLabel": "Zurück zum Blog",
+    "readPostLabel": "Beitrag lesen",
+    "readTimeSuffix": "Min. Lesezeit"
+  }
+}

@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ButtonLink from '@/components/ButtonLink.astro';
+import { getSiteContent } from '@/data/site-content';
+
+const content = getSiteContent('en');
+---
+
+<BaseLayout title="Page not found" description="The page you requested could not be found." currentPath={Astro.url.pathname} locale="en" content={content}>
+  <section class="flex min-h-[70vh] items-center px-4 py-24">
+    <div class="panel mx-auto max-w-3xl p-8 text-center md:p-12">
+      <p class="eyebrow mb-4">404</p>
+      <h1 class="font-heading text-4xl font-semibold tracking-[-0.04em] text-text md:text-5xl">
+        This page is off the map.
+      </h1>
+      <p class="mt-4 text-text-muted">The link may be broken, or the page may have moved.</p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <ButtonLink href="/">Back home</ButtonLink>
+        <ButtonLink href="/blog/" variant="secondary">Read the blog</ButtonLink>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

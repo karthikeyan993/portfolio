@@ -1,0 +1,25 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  containerClass?: string;
+  spacing?: 'default' | 'tight';
+  tinted?: boolean;
+}
+
+const {
+  id,
+  class: className = '',
+  containerClass = '',
+  spacing = 'default',
+  tinted = false,
+} = Astro.props;
+
+const spacingClass = spacing === 'tight' ? 'py-16' : 'py-24';
+---
+
+<section id={id} class:list={[spacingClass, 'px-4', tinted && 'bg-elevated/45', className]}>
+  <div class:list={['mx-auto max-w-6xl', containerClass]}>
+    <slot />
+  </div>
+</section>

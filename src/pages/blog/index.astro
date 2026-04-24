@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BlogCard from '@/components/BlogCard.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSiteContent } from '@/data/site-content';
+import { groupPostsByYear, isPublishedPost, sortPostsByPublishedDate } from '@/lib/blog';
+
+const content = getSiteContent('en');
+const posts = sortPostsByPublishedDate((await getCollection('blog')).filter(isPublishedPost));
+const groups = groupPostsByYear(posts);
+const tags = Array.from(new Set(posts.flatMap((post) => post.data.tags))).sort((a, b) => a.localeCompare(b));
+const title = `Blog | ${content.hero.name}`;
+const description = content.writing.description;
+---
+
+<BaseLayout title={title} description={description} currentPath={Astro.url.pathname} locale="en" content={content}>
+  <section class="px-4 py-20 md:py-28">
+    <div class="mx-auto max-w-6xl">
+      <div class="max-w-3xl">
+        <p class="eyebrow mb-4">{content.writing.eyebrow}</p>
+        <h1 class="font-heading text-5xl font-semibold leading-tight tracking-[-0.05em] text-text md:text-7xl">
+          {content.writing.title}
+        </h1>
+        <p class="mt-6 text-lg leading-8 text-text-muted">{description}</p>
+      </div>
+
+      {tags.length > 0 ? (
+        <div class="mt-8 flex flex-wrap gap-2" aria-label="Blog tags">
+          {tags.map((tag) => <span class="tag">{tag}</span>)}
+        </div>
+      ) : null}
+    </div>
+  </section>
+
+  <section class="px-4 pb-24">
+    <div class="mx-auto max-w-6xl">
+      {groups.length === 0 ? (
+        <div class="panel p-8 text-center">
+          <h2 class="font-heading text-2xl font-semibold text-text">No posts yet</h2>
+          <p class="mt-2 text-text-muted">Check back soon for new writing.</p>
+        </div>
+      ) : (
+        <div class="space-y-12">
+          {groups.map((group) => (
+            <section class="grid gap-5 md:grid-cols-[8rem_1fr]">
+              <h2 class="font-mono text-sm font-semibold uppercase tracking-[0.2em] text-brand-accent">{group.year}</h2>
+              <div class="space-y-4 border-l border-border pl-5">
+                {group.posts.map((post) => (
+                  <BlogCard post={post} readLabel={content.common.readPostLabel} readTimeSuffix={content.common.readTimeSuffix} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

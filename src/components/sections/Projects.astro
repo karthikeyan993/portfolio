@@ -1,0 +1,44 @@
+---
+import Icon from '@/components/Icon.astro';
+import Section from '@/components/Section.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import type { ProjectsContent } from '@/data/site-content.schema';
+
+interface Props {
+  content: ProjectsContent;
+}
+
+const { content } = Astro.props;
+---
+
+<Section id="projects">
+  <SectionHeading eyebrow={content.eyebrow} title={content.title} />
+
+  <div class="grid gap-4 md:grid-cols-3">
+    {content.items.map((project) => (
+      <article class="panel-hover flex h-full flex-col p-5">
+        <div class="project-placeholder mb-5 flex aspect-video items-center justify-center border border-border bg-elevated">
+          <span class="font-mono text-4xl font-semibold text-text-muted/40">{project.title.charAt(0)}</span>
+        </div>
+
+        <h3 class="font-heading text-xl font-semibold tracking-[-0.03em] text-text">{project.title}</h3>
+        <p class="mt-3 flex-1 text-sm leading-6 text-text-muted">{project.summary}</p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          {project.tags.map((tech) => <span class="tag">{tech}</span>)}
+        </div>
+        <div class="mt-6 flex gap-4 border-t border-border pt-4">
+          {project.links.live ? (
+            <a href={project.links.live} class="inline-flex items-center gap-1 text-sm font-semibold text-text-muted hover:text-brand-primary">
+              <Icon name="external-link" size={14} /> Demo
+            </a>
+          ) : null}
+          {project.links.source ? (
+            <a href={project.links.source} class="inline-flex items-center gap-1 text-sm font-semibold text-text-muted hover:text-brand-primary">
+              <Icon name="github" size={14} /> Code
+            </a>
+          ) : null}
+        </div>
+      </article>
+    ))}
+  </div>
+</Section>

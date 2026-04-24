@@ -1,22 +1,24 @@
 import { describe, expect, it } from 'vitest';
-import rawSiteContent from '@/content/site-content.json';
-import { parseSiteContent } from '@/content/site-content.schema';
+import rawEnglishContent from '@/data/site-content.en.json';
+import rawGermanContent from '@/data/site-content.de.json';
+import { parseSiteContent } from '@/data/site-content.schema';
 
 describe('site content schema', () => {
-  it('parses valid content', () => {
-    expect(parseSiteContent(rawSiteContent)).toBeDefined();
+  it('parses valid localized content', () => {
+    expect(parseSiteContent(rawEnglishContent).locale).toBe('en');
+    expect(parseSiteContent(rawGermanContent).locale).toBe('de');
   });
 
   it('throws a readable error for invalid content', () => {
     const invalidContent = {
-      ...rawSiteContent,
+      ...rawEnglishContent,
       hero: {
-        ...rawSiteContent.hero,
+        ...rawEnglishContent.hero,
         titles: [],
       },
     };
 
-    expect(() => parseSiteContent(invalidContent)).toThrowError(
+    expect(() => parseSiteContent(invalidContent)).toThrow(
       /Invalid site content: hero\.titles: Too small/
     );
   });

@@ -1,0 +1,219 @@
+{
+  "locale": "en",
+  "seo": {
+    "title": "Alex Chen | Full Stack Engineer",
+    "description": "Full-stack engineer building fast, reliable product interfaces and practical web systems.",
+    "footerNote": "Built as a static Astro site with performance-first defaults."
+  },
+  "nav": [
+    { "id": "about", "label": "About" },
+    { "id": "tech-stack", "label": "Stack" },
+    { "id": "experience", "label": "Experience" },
+    { "id": "projects", "label": "Projects" },
+    { "id": "contact", "label": "Contact" }
+  ],
+  "hero": {
+    "greeting": "Hello, I'm",
+    "name": "Alex Chen",
+    "initials": "AC",
+    "titles": ["Full Stack Engineer", "Performance-minded Builder", "German Speaker"],
+    "summary": "I build dependable web products with a bias for clarity, fast interfaces, and maintainable systems. Based in San Francisco and open to focused product engineering work.",
+    "ctaLabel": "View Projects",
+    "ctaHref": "#projects",
+    "resumeLabel": "Download Resume",
+    "socialLinks": [
+      { "platform": "github", "href": "https://github.com", "label": "GitHub" },
+      { "platform": "linkedin", "href": "https://www.linkedin.com", "label": "LinkedIn" },
+      { "platform": "mail", "href": "mailto:alex@example.com", "label": "Email" }
+    ]
+  },
+  "about": {
+    "eyebrow": "Profile",
+    "title": "Engineer for product teams that care about speed and polish.",
+    "paragraphs": [
+      "I work across frontend, backend, and deployment workflows, with a preference for small, well-tested systems that stay understandable as they grow.",
+      "My focus is practical engineering: fast pages, thoughtful UX details, clear data flow, and code that another engineer can safely change later."
+    ],
+    "highlights": [
+      {
+        "icon": "user",
+        "label": "3+ years shipping",
+        "description": "Production web apps and product surfaces"
+      },
+      {
+        "icon": "mapPin",
+        "label": "San Francisco, CA",
+        "description": "Open to remote and hybrid teams"
+      },
+      {
+        "icon": "languages",
+        "label": "English & German (B1)",
+        "description": "Comfortable across international teams"
+      }
+    ]
+  },
+  "techStack": {
+    "eyebrow": "Tools",
+    "title": "A stack chosen for durable product delivery.",
+    "categories": [
+      {
+        "title": "Frontend",
+        "techs": ["React", "Astro", "TypeScript", "Tailwind CSS", "Web Performance"]
+      },
+      {
+        "title": "Backend",
+        "techs": ["Node.js", "Express", "PostgreSQL", "Redis", "GraphQL"]
+      },
+      {
+        "title": "Delivery",
+        "techs": ["Netlify", "Docker", "CI/CD", "Testing", "Observability"]
+      }
+    ]
+  },
+  "experience": {
+    "eyebrow": "Experience",
+    "title": "Recent roles and impact.",
+    "items": [
+      {
+        "company": "TechCorp",
+        "role": "Senior Frontend Engineer",
+        "period": "2022 - Present",
+        "location": "San Francisco, CA",
+        "bullets": [
+          "Led frontend architecture for a SaaS platform serving 50K+ users.",
+          "Built a component library and improved performance by 40%."
+        ]
+      },
+      {
+        "company": "StartupXYZ",
+        "role": "Full Stack Developer",
+        "period": "2021 - 2022",
+        "location": "Remote",
+        "bullets": [
+          "Developed end-to-end features for a fintech product.",
+          "Implemented real-time data pipelines and responsive dashboards."
+        ]
+      },
+      {
+        "company": "WebAgency",
+        "role": "Junior Developer",
+        "period": "2020 - 2021",
+        "location": "San Jose, CA",
+        "bullets": [
+          "Built client websites and internal tools.",
+          "Shipped features with React, Node.js, and cloud deployments."
+        ]
+      }
+    ]
+  },
+  "featuredProject": {
+    "eyebrow": "Selected work",
+    "sectionTitle": "Featured Project",
+    "slug": "clouddash-analytics",
+    "title": "CloudDash Analytics",
+    "summary": "A real-time analytics dashboard for cloud infrastructure monitoring. Built with React, D3.js, and WebSocket for live data streaming. Handles 10K+ data points per second with smooth visualizations.",
+    "tags": ["React", "D3.js", "WebSocket", "Node.js", "PostgreSQL"],
+    "links": {
+      "live": "#",
+      "source": "#"
+    },
+    "featured": true,
+    "badge": "Featured",
+    "previewLabel": "Project Preview"
+  },
+  "projects": {
+    "eyebrow": "Projects",
+    "title": "Smaller builds and experiments.",
+    "items": [
+      {
+        "slug": "devflow",
+        "title": "DevFlow",
+        "summary": "A developer productivity tool with GitHub integration, task tracking, and automated workflows.",
+        "tags": ["Next.js", "Prisma", "tRPC"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      },
+      {
+        "slug": "linguachat",
+        "title": "LinguaChat",
+        "summary": "AI-powered language learning app with real-time conversation practice and progress tracking.",
+        "tags": ["React", "OpenAI", "Firebase"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      },
+      {
+        "slug": "pixelforge",
+        "title": "PixelForge",
+        "summary": "Browser-based image editor with layer support, filters, and collaborative editing features.",
+        "tags": ["Canvas API", "WebRTC", "Rust/WASM"],
+        "links": {
+          "live": "#",
+          "source": "#"
+        },
+        "featured": false
+      }
+    ]
+  },
+  "writing": {
+    "eyebrow": "Writing",
+    "title": "Notes from the build bench.",
+    "description": "Short essays about architecture, performance, hosting, and practical product engineering.",
+    "readAllLabel": "Read all writing"
+  },
+  "resume": {
+    "href": "/resume.pdf",
+    "label": "Download Resume",
+    "headerLabel": "Resume",
+    "note": "PDF, sanitized for public sharing"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Have a focused project or role in mind?",
+    "description": "Send a short note. I read every message and reply when there is a clear fit.",
+    "email": "alex@example.com",
+    "location": "San Francisco, CA",
+    "formEnabled": true,
+    "submitLabel": "Send Message",
+    "successTitle": "Message sent",
+    "successMessage": "Thanks for reaching out. I will get back to you soon.",
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Tell me what you are building or hiring for...",
+    "links": [
+      { "platform": "email", "href": "mailto:alex@example.com", "label": "Email" },
+      { "platform": "linkedin", "href": "https://www.linkedin.com", "label": "LinkedIn" },
+      { "platform": "github", "href": "https://github.com", "label": "GitHub" }
+    ],
+    "infoCards": [
+      {
+        "icon": "mail",
+        "label": "Email",
+        "value": "alex@example.com",
+        "href": "mailto:alex@example.com"
+      },
+      {
+        "icon": "mapPin",
+        "label": "Location",
+        "value": "San Francisco, CA"
+      }
+    ]
+  },
+  "common": {
+    "blogLabel": "Blog",
+    "languageLabel": "Language",
+    "themeLightLabel": "Light",
+    "themeDarkLabel": "Dark",
+    "menuOpenLabel": "Open menu",
+    "menuCloseLabel": "Close menu",
+    "backToBlogLabel": "Back to blog",
+    "readPostLabel": "Read post",
+    "readTimeSuffix": "min read"
+  }
+}

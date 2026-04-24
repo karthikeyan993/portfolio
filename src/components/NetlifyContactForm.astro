@@ -1,0 +1,129 @@
+---
+import Icon from '@/components/Icon.astro';
+import Section from '@/components/Section.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import type { SiteContent } from '@/data/site-content.schema';
+
+interface Props {
+  content: SiteContent;
+}
+
+const { content } = Astro.props;
+const formName = 'portfolio-contact';
+const showSuccess = Astro.url.searchParams.get('contact') === 'success';
+const iconFor = {
+  mail: 'mail',
+  mapPin: 'map-pin',
+} as const;
+const socialIconFor = {
+  email: 'mail',
+  linkedin: 'linkedin',
+  github: 'github',
+} as const;
+---
+
+<Section id="contact" tinted>
+  <div class="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+    <div>
+      <SectionHeading
+        eyebrow={content.contact.eyebrow}
+        title={content.contact.title}
+        description={content.contact.description}
+      />
+      <div class="space-y-4">
+        {content.contact.infoCards.map(({ icon, label, value, href }) => (
+          <div class="flex items-center gap-4 border-t border-border pt-4">
+            <span class="icon-frame">
+              <Icon name={iconFor[icon]} size={18} />
+            </span>
+            <div>
+              <p class="font-mono text-xs uppercase tracking-[0.18em] text-text-muted">{label}</p>
+              {href ? (
+                <a href={href} class="font-semibold text-text hover:text-brand-primary">{value}</a>
+              ) : (
+                <p class="font-semibold text-text">{value}</p>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="panel p-6 md:p-8">
+      {showSuccess ? (
+        <div class="border border-brand-primary/40 bg-elevated p-4 text-sm text-text">
+          <p class="font-semibold">{content.contact.successTitle}</p>
+          <p class="mt-1 text-text-muted">{content.contact.successMessage}</p>
+        </div>
+      ) : null}
+
+      {content.contact.formEnabled ? (
+        <form
+          name={formName}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/?contact=success#contact"
+          class="mt-6 space-y-4 first:mt-0"
+        >
+          <input type="hidden" name="form-name" value={formName} />
+          <p class="hidden" aria-hidden="true">
+            <label>
+              Do not fill this field
+              <input name="bot-field" autocomplete="off" tabindex="-1" />
+            </label>
+          </p>
+
+          <div>
+            <label for="name" class="mb-1 block text-sm font-semibold text-text">{content.contact.nameLabel}</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              required
+              class="w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              placeholder={content.contact.nameLabel}
+            />
+          </div>
+          <div>
+            <label for="email" class="mb-1 block text-sm font-semibold text-text">{content.contact.emailLabel}</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              class="w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              placeholder={content.contact.email}
+            />
+          </div>
+          <div>
+            <label for="message" class="mb-1 block text-sm font-semibold text-text">{content.contact.messageLabel}</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="5"
+              class="w-full resize-none border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              placeholder={content.contact.messagePlaceholder}
+            ></textarea>
+          </div>
+
+          <button type="submit" class="button-primary w-full gap-2">
+            {content.contact.submitLabel}
+            <Icon name="send" size={16} />
+          </button>
+        </form>
+      ) : (
+        <p class="text-text-muted">Contact form is currently disabled.</p>
+      )}
+
+      <div class="mt-6 flex gap-3 border-t border-border pt-6">
+        {content.contact.links.map(({ platform, href, label }) => (
+          <a href={href} aria-label={label} class="social-link">
+            <Icon name={socialIconFor[platform]} size={18} />
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</Section>

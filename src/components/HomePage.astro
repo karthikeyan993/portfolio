@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import About from '@/components/sections/About.astro';
+import Experience from '@/components/sections/Experience.astro';
+import FeaturedProject from '@/components/sections/FeaturedProject.astro';
+import Hero from '@/components/sections/Hero.astro';
+import LatestWriting from '@/components/sections/LatestWriting.astro';
+import NetlifyContactForm from '@/components/NetlifyContactForm.astro';
+import Projects from '@/components/sections/Projects.astro';
+import TechStack from '@/components/sections/TechStack.astro';
+import type { SiteContent } from '@/data/site-content.schema';
+import { isPublishedPost, sortPostsByPublishedDate } from '@/lib/blog';
+
+interface Props {
+  content: SiteContent;
+  resumeAvailable?: boolean;
+}
+
+const { content, resumeAvailable = false } = Astro.props;
+const posts = sortPostsByPublishedDate((await getCollection('blog')).filter(isPublishedPost)).slice(0, 3);
+---
+
+<Hero content={content.hero} resume={content.resume} resumeAvailable={resumeAvailable} />
+<About content={content.about} />
+<TechStack content={content.techStack} tinted />
+<Experience content={content.experience} />
+<FeaturedProject content={content.featuredProject} tinted />
+<Projects content={content.projects} />
+{posts.length > 0 ? <LatestWriting posts={posts} content={content} /> : null}
+<NetlifyContactForm content={content} />
