@@ -1,8 +1,8 @@
 {
   "locale": "en",
   "seo": {
-    "title": "Alex Chen | Full Stack Engineer",
-    "description": "Full-stack engineer building fast, reliable product interfaces and practical web systems.",
+    "title": "Karthikeyan | Software Engineer",
+    "description": "Software engineer building fast, reliable product interfaces and practical web systems.",
     "footerNote": "Built as a static Astro site with performance-first defaults."
   },
   "nav": [
@@ -14,9 +14,9 @@
   ],
   "hero": {
     "greeting": "Hello, I'm",
-    "name": "Alex Chen",
-    "initials": "AC",
-    "titles": ["Full Stack Engineer", "Performance-minded Builder", "German Speaker"],
+    "name": "Karthikeyan",
+    "initials": "V",
+    "titles": ["Software Engineer", "Performance-minded Builder", "Learning German"],
     "summary": "I build dependable web products with a bias for clarity, fast interfaces, and maintainable systems. Based in San Francisco and open to focused product engineering work.",
     "ctaLabel": "View Projects",
     "ctaHref": "#projects",

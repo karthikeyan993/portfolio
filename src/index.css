@@ -11,17 +11,20 @@
 
 @layer base {
   :root {
-    --bg: 42 42% 94%;
-    --surface: 44 38% 97%;
-    --elevated: 38 32% 91%;
-    --border: 38 19% 76%;
-    --text: 145 15% 12%;
-    --text-muted: 104 9% 38%;
-    --brand-primary: 84 21% 31%;
-    --brand-accent: 18 42% 44%;
+    --bg: 220 20% 97%;
+    --surface: 220 25% 100%;
+    --elevated: 220 14% 93%;
+    --border: 220 13% 84%;
+    --text: 222 47% 11%;
+    --text-muted: 220 9% 43%;
+    --brand-primary: 162 63% 41%;
+    --brand-accent: 4 78% 63%;
+    --focus-ring: 162 63% 38%;
+    --selection-bg: 162 58% 36%;
+    --selection-text: 0 0% 100%;
     --radius-xl: 10px;
     --radius-2xl: 16px;
-    --shadow-panel: 0 1px 0 hsl(var(--text) / 0.06), 0 18px 48px hsl(var(--text) / 0.08);
+    --shadow-panel: 0 1px 2px hsl(222 47% 11% / 0.04), 0 12px 40px hsl(222 47% 11% / 0.06);
   }
 
   .dark {
@@ -46,12 +49,12 @@
   }
 
   ::selection {
-    color: hsl(var(--surface));
-    background: hsl(var(--brand-primary));
+    color: hsl(var(--selection-text));
+    background: hsl(var(--selection-bg));
   }
 
   :where(a, button, input, textarea, select):focus-visible {
-    outline: 2px solid hsl(var(--brand-accent));
+    outline: 2px solid hsl(var(--focus-ring));
     outline-offset: 3px;
   }
 
