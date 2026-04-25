@@ -44,10 +44,10 @@ const title = `${post.data.title} | ${content.hero.name}`;
           ) : null}
         </div>
 
-        <h1 class="mt-6 font-heading text-5xl font-semibold leading-tight tracking-[-0.05em] text-text md:text-7xl">
+        <h1 class="mt-6 headline-xl text-brand-primary">
           {post.data.title}
         </h1>
-        <p class="mt-6 text-lg leading-8 text-text-muted">{post.data.description}</p>
+        <p class="mt-6 body-lg text-text-muted">{post.data.description}</p>
 
         <div class="mt-8 flex flex-wrap gap-2">
           {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
@@ -55,21 +55,21 @@ const title = `${post.data.title} | ${content.hero.name}`;
       </header>
 
       {post.data.cover ? (
-        <img src={post.data.cover} alt="" class="mt-10 w-full border border-border" />
+        <img src={post.data.cover} alt="" class="mt-10 w-full" />
       ) : null}
 
-      <div class="panel mt-10 p-6 md:p-10">
+      <div class="mt-16">
         <Prose>
           <Content />
         </Prose>
       </div>
 
-      <div class="panel mt-8 p-6">
-        <p class="font-heading text-xl font-semibold text-text">Want to talk about this?</p>
-        <p class="mt-2 text-sm leading-6 text-text-muted">
+      <div class="mt-24 border-t border-border pt-8">
+        <p class="headline-md text-brand-primary">Want to talk about this?</p>
+        <p class="mt-2 body-md text-text-muted">
           Send a note from the contact section or connect through the social links below.
         </p>
-        <a href="/#contact" class="mt-4 inline-flex text-sm font-semibold text-brand-primary hover:text-text">Go to contact</a>
+        <a href="/#contact" class="mt-4 inline-flex label-caps text-brand-primary hover:text-text">Go to contact</a>
       </div>
     </div>
   </article>

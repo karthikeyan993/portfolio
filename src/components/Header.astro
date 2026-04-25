@@ -16,35 +16,39 @@ const alternateLocale = getAlternateLocale(locale);
 const alternateUrl = getLocalePath(alternateLocale);
 ---
 
-<nav class="flex justify-end items-center max-w-7xl mx-auto px-8 md:px-16 py-10 w-full">
-  <div class="flex items-center gap-6 md:gap-12">
-    <div class="flex gap-6 md:gap-8 items-center font-heading text-lg tracking-tight">
-      <a href="/" class={`pb-0.5 transition-all duration-300 ease-in-out ${isHome ? 'text-text border-b border-text italic opacity-70' : 'text-text-muted hover:text-text'}`}>
-        Home
-      </a>
-      <a href="/blog/" class={`pb-0.5 transition-all duration-300 ease-in-out ${!isHome ? 'text-text border-b border-text italic opacity-70' : 'text-text-muted hover:text-text'}`}>
-        Blog
-      </a>
-    </div>
+<header class="fixed top-6 left-0 right-0 z-50 pointer-events-none transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 flex justify-end">
+    <nav class="pointer-events-auto flex items-center bg-bg border border-border/40 rounded-full px-6 md:px-8 py-3 shadow-[0_4px_12px_rgba(0,0,0,0.03)] transition-colors">
+      <div class="flex items-center gap-6 md:gap-8">
+      <div class="flex gap-6 items-center font-heading text-lg tracking-tight">
+        <a href="/" class={`pb-0.5 transition-all duration-300 ease-in-out ${isHome ? 'text-text border-b border-text opacity-70' : 'text-text-muted hover:text-text'}`}>
+          Home
+        </a>
+        <a href="/blog/" class={`pb-0.5 transition-all duration-300 ease-in-out ${!isHome ? 'text-text border-b border-text opacity-70' : 'text-text-muted hover:text-text'}`}>
+          Blog
+        </a>
+      </div>
 
-    <div class="flex items-center gap-6 border-l border-border pl-6">
-      <a
-        href={alternateUrl}
-        class="label-caps text-text-muted hover:text-text transition-colors"
-        data-locale-link
-        data-locale={alternateLocale}
-      >
-        {alternateLocale.toUpperCase()}
-      </a>
-      <button 
-        type="button" 
-        class="text-text-muted hover:text-brand-primary transition-colors flex items-center justify-center p-1" 
-        data-theme-toggle
-        aria-label="Toggle theme"
-      >
-        <span data-theme-icon="light"><Icon name="moon" size={20} /></span>
-        <span data-theme-icon="dark" hidden><Icon name="sun" size={20} /></span>
-      </button>
+      <div class="flex items-center gap-5 border-l border-border pl-5">
+        <a
+          href={alternateUrl}
+          class="label-caps text-text-muted hover:text-text transition-colors"
+          data-locale-link
+          data-locale={alternateLocale}
+        >
+          {alternateLocale.toUpperCase()}
+        </a>
+        <button 
+          type="button" 
+          class="text-text-muted hover:text-brand-primary transition-colors flex items-center justify-center" 
+          data-theme-toggle
+          aria-label="Toggle theme"
+        >
+          <span data-theme-icon="light"><Icon name="moon" size={20} /></span>
+          <span data-theme-icon="dark" hidden><Icon name="sun" size={20} /></span>
+        </button>
+      </div>
     </div>
+  </nav>
   </div>
-</nav>
+</header>
