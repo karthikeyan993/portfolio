@@ -1,6 +1,7 @@
 ---
 import { getAlternateLocale, getLocalePath } from '@/data/site-content';
 import type { Locale, SiteContent } from '@/data/site-content.schema';
+import Icon from '@/components/Icon.astro';
 
 interface Props {
   content: SiteContent;
@@ -16,8 +17,8 @@ const alternateUrl = getLocalePath(alternateLocale);
 ---
 
 <nav class="flex justify-end items-center max-w-7xl mx-auto px-8 md:px-16 py-10 w-full">
-  <div class="flex items-center gap-12">
-    <div class="hidden md:flex gap-8 items-center font-heading text-lg tracking-tight">
+  <div class="flex items-center gap-6 md:gap-12">
+    <div class="flex gap-6 md:gap-8 items-center font-heading text-lg tracking-tight">
       <a href="/" class={`pb-0.5 transition-all duration-300 ease-in-out ${isHome ? 'text-text border-b border-text italic opacity-70' : 'text-text-muted hover:text-text'}`}>
         Home
       </a>
@@ -37,12 +38,12 @@ const alternateUrl = getLocalePath(alternateLocale);
       </a>
       <button 
         type="button" 
-        class="label-caps text-text-muted hover:text-text transition-colors" 
+        class="text-text-muted hover:text-brand-primary transition-colors flex items-center justify-center p-1" 
         data-theme-toggle
         aria-label="Toggle theme"
       >
-        <span data-theme-icon="light">DARK</span>
-        <span data-theme-icon="dark" hidden>LIGHT</span>
+        <span data-theme-icon="light"><Icon name="moon" size={20} /></span>
+        <span data-theme-icon="dark" hidden><Icon name="sun" size={20} /></span>
       </button>
     </div>
   </div>
