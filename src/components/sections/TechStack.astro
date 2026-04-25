@@ -1,6 +1,4 @@
 ---
-import Section from '@/components/Section.astro';
-import SectionHeading from '@/components/SectionHeading.astro';
 import type { TechStackContent } from '@/data/site-content.schema';
 
 interface Props {
@@ -8,20 +6,25 @@ interface Props {
   tinted?: boolean;
 }
 
-const { content, tinted = false } = Astro.props;
+const { content } = Astro.props;
 ---
 
-<Section id="tech-stack" tinted={tinted}>
-  <SectionHeading eyebrow={content.eyebrow} title={content.title} />
-
-  <div class="grid gap-4 md:grid-cols-3">
-    {content.categories.map((category) => (
-      <div class="panel p-6">
-        <h3 class="font-heading text-xl font-semibold tracking-[-0.03em] text-text">{category.title}</h3>
-        <div class="mt-5 flex flex-wrap gap-2">
-          {category.techs.map((tech) => <span class="tag">{tech}</span>)}
+<section id="tech-stack" class="py-16 md:py-24">
+  <div class="mx-auto max-w-7xl px-4 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16">
+      <div class="md:col-span-4 pt-4">
+        <h2 class="headline-md text-brand-primary">{content.eyebrow}</h2>
+        <p class="mt-2 text-sm italic text-text-muted">{content.title}</p>
+      </div>
+      <div class="md:col-span-8 md:col-start-5 pt-8">
+        <div class="flex flex-wrap gap-3">
+          {content.categories.flatMap(c => c.techs).map((tech) => (
+            <span class="label-caps text-text-muted border border-border px-4 py-2 bg-transparent uppercase">
+              {tech}
+            </span>
+          ))}
         </div>
       </div>
-    ))}
+    </div>
   </div>
-</Section>
+</section>

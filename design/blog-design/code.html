@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Blogs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#b1b4b0",
+                      "tertiary-container": "#434643",
+                      "primary-container": "#2d4b43",
+                      "on-error": "#ffffff",
+                      "surface-container": "#eeeeec",
+                      "on-surface": "#1a1c1b",
+                      "error": "#ba1a1a",
+                      "primary": "#16342d",
+                      "surface-bright": "#faf9f7",
+                      "on-surface-variant": "#414846",
+                      "secondary-fixed-dim": "#a9cec4",
+                      "on-primary-container": "#99bab0",
+                      "on-primary-fixed": "#01201a",
+                      "background": "#faf9f7",
+                      "on-primary": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#46645c",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-low": "#f4f3f2",
+                      "surface-container-highest": "#e3e2e1",
+                      "on-tertiary-fixed-variant": "#444745",
+                      "surface": "#faf9f7",
+                      "tertiary-fixed": "#e1e3df",
+                      "surface-variant": "#e3e2e1",
+                      "on-secondary-container": "#476961",
+                      "secondary-container": "#c2e8dd",
+                      "surface-dim": "#dadad8",
+                      "outline": "#717976",
+                      "on-background": "#1a1c1b",
+                      "surface-container-high": "#e8e8e6",
+                      "on-tertiary-fixed": "#191c1a",
+                      "on-secondary-fixed": "#00201b",
+                      "inverse-on-surface": "#f1f1ef",
+                      "secondary": "#43655d",
+                      "secondary-fixed": "#c5eae0",
+                      "on-secondary-fixed-variant": "#2b4d45",
+                      "tertiary": "#2d302d",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#2e4c44",
+                      "primary-fixed": "#c8eadf",
+                      "inverse-primary": "#adcec3",
+                      "inverse-surface": "#2f3130",
+                      "primary-fixed-dim": "#adcec3",
+                      "outline-variant": "#c1c8c4",
+                      "tertiary-fixed-dim": "#c5c7c3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "content-gap": "4rem",
+                      "stack-sm": "1rem",
+                      "gutter": "2rem",
+                      "section-gap": "10rem",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-xl": [
+                              "Newsreader"
+                      ],
+                      "display-hero": [
+                              "Newsreader"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Newsreader"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-hero": [
+                              "120px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "300"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.1em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="bg-white/90 dark:bg-zinc-950/90 backdrop-blur-sm border-b border-[#2D4B43]/10 dark:border-zinc-100/10 docked full-width top-0 z-50 flat no shadows">
+<nav aria-label="Main navigation" class="flex justify-between items-center max-w-7xl mx-auto px-8 md:px-16 py-10">
+<a class="text-2xl font-medium tracking-tighter text-[#2D4B43] dark:text-zinc-100 italic" href="#">ARCHITECT</a>
+<ul class="flex items-center gap-8 hidden md:flex">
+<li>
+<a class="font-serif text-lg tracking-tight text-[#2D4B43]/60 dark:text-zinc-100/50 hover:text-[#2D4B43] dark:hover:text-zinc-100 transition-colors hover:italic transition-all duration-300 ease-in-out" href="#">Home</a>
+</li>
+<li>
+<a aria-current="page" class="font-serif text-lg tracking-tight text-[#2D4B43] dark:text-zinc-100 border-b border-[#2D4B43] dark:border-zinc-100 italic pb-0.5 opacity-70 transition-opacity" href="#">Blog</a>
+</li>
+</ul>
+</nav>
+</header>
+<!-- Main Content -->
+<main class="flex-grow max-w-container-max mx-auto w-full px-8 md:px-16 pt-24 pb-section-gap">
+<!-- Header Section -->
+<header class="mb-24 md:w-8/12 lg:w-6/12 col-start-3">
+<h1 class="font-display-hero text-display-hero text-primary mb-6">Blogs</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Thoughts, essays, and architectural reflections on the digital landscape. A quiet place for long-form writing.</p>
+</header>
+<!-- Blog List -->
+<div class="space-y-16 lg:col-start-4 lg:col-end-10">
+<!-- Article Item 1 -->
+<article class="group border-b border-primary/10 pb-16">
+<a class="block" href="#">
+<div class="mb-4">
+<time class="font-label-caps text-label-caps text-outline uppercase tracking-widest" datetime="2024-03-15">March 15, 2024</time>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-4 group-hover:italic transition-all duration-300">The Typography of Silence</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+                        In an era of visual noise, white space becomes a luxury commodity. Exploring how intentional emptiness in UI design elevates the reading experience and communicates brand confidence without saying a word.
+                    </p>
+</a>
+</article>
+<!-- Article Item 2 -->
+<article class="group border-b border-primary/10 pb-16">
+<a class="block" href="#">
+<div class="mb-4">
+<time class="font-label-caps text-label-caps text-outline uppercase tracking-widest" datetime="2024-02-28">February 28, 2024</time>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-4 group-hover:italic transition-all duration-300">Digital Monoculture</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+                        Are we building the same website over and over again? A critique of modern framework reliance and a plea for a return to editorial design principles on the web. The homogenization of digital interfaces and its impact on brand distinctiveness.
+                    </p>
+</a>
+</article>
+<!-- Article Item 3 -->
+<article class="group border-b border-primary/10 pb-16">
+<a class="block" href="#">
+<div class="mb-4">
+<time class="font-label-caps text-label-caps text-outline uppercase tracking-widest" datetime="2024-01-12">January 12, 2024</time>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-4 group-hover:italic transition-all duration-300">Form Follows Friction</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+                        Why making tasks 'too easy' might be harming user engagement. Sometimes, deliberate friction is necessary to create meaningful interactions and cognitive presence. Analyzing the balance between seamless UX and intentional slowing.
+                    </p>
+</a>
+</article>
+<!-- Article Item 4 -->
+<article class="group border-b border-primary/10 pb-16">
+<a class="block" href="#">
+<div class="mb-4">
+<time class="font-label-caps text-label-caps text-outline uppercase tracking-widest" datetime="2023-11-05">November 5, 2023</time>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-4 group-hover:italic transition-all duration-300">The Grid as a Compass</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl leading-relaxed">
+                        Deconstructing the 12-column grid not as a rigid structure, but as a flexible framework for narrative flow. How to break the grid purposefully to create asymmetrical tension and visual hierarchy.
+                    </p>
+</a>
+</article>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-zinc-950 border-t border-[#2D4B43]/10 dark:border-zinc-100/10 full-width static mt-40 flat no shadows">
+<div class="max-w-7xl mx-auto px-8 md:px-16 py-20 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="text-xs font-bold tracking-widest text-[#2D4B43] dark:text-zinc-100">
+                © 2024 DESIGN MONOGRAPH. ALL RIGHTS RESERVED.
+            </div>
+<ul class="flex gap-6">
+<li>
+<a class="font-serif text-[10px] tracking-[0.2em] uppercase text-[#2D4B43]/40 dark:text-zinc-100/40 hover:text-[#2D4B43] dark:hover:text-zinc-100 transition-colors duration-500 focus:underline underline-offset-4" href="#">GITHUB</a>
+</li>
+<li>
+<a class="font-serif text-[10px] tracking-[0.2em] uppercase text-[#2D4B43]/40 dark:text-zinc-100/40 hover:text-[#2D4B43] dark:hover:text-zinc-100 transition-colors duration-500 focus:underline underline-offset-4" href="#">LINKEDIN</a>
+</li>
+<li>
+<a class="font-serif text-[10px] tracking-[0.2em] uppercase text-[#2D4B43]/40 dark:text-zinc-100/40 hover:text-[#2D4B43] dark:hover:text-zinc-100 transition-colors duration-500 focus:underline underline-offset-4" href="#">RSS</a>
+</li>
+</ul>
+</div>
+</footer>
+</body></html>

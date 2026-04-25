@@ -1,9 +1,10 @@
-@import '@fontsource/ibm-plex-sans/400.css';
-@import '@fontsource/ibm-plex-sans/500.css';
-@import '@fontsource/ibm-plex-sans/600.css';
-@import '@fontsource/ibm-plex-sans/700.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/newsreader/300.css';
+@import '@fontsource/newsreader/300-italic.css';
+@import '@fontsource/newsreader/400.css';
+@import '@fontsource/newsreader/400-italic.css';
+@import '@fontsource/newsreader/500.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/600.css';
 
 @tailwind base;
 @tailwind components;
@@ -11,32 +12,31 @@
 
 @layer base {
   :root {
-    --bg: 220 20% 97%;
-    --surface: 220 25% 100%;
-    --elevated: 220 14% 93%;
-    --border: 220 13% 84%;
-    --text: 222 47% 11%;
-    --text-muted: 220 9% 43%;
-    --brand-primary: 162 63% 41%;
-    --brand-accent: 4 78% 63%;
-    --focus-ring: 162 63% 38%;
-    --selection-bg: 162 58% 36%;
-    --selection-text: 0 0% 100%;
-    --radius-xl: 10px;
-    --radius-2xl: 16px;
-    --shadow-panel: 0 1px 2px hsl(222 47% 11% / 0.04), 0 12px 40px hsl(222 47% 11% / 0.06);
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --elevated: #f4f3f2;
+    --border: #c1c8c4;
+    --text: #1a1c1b;
+    --text-muted: #414846;
+    --brand-primary: #16342d;
+    --brand-accent: #43655d;
+    --selection-bg: #c2e8dd;
+    --selection-text: #476961;
+    --focus-ring: #46645c;
   }
 
   .dark {
-    --bg: 150 14% 8%;
-    --surface: 150 12% 11%;
-    --elevated: 150 10% 15%;
-    --border: 145 8% 25%;
-    --text: 42 32% 91%;
-    --text-muted: 56 10% 66%;
-    --brand-primary: 78 28% 62%;
-    --brand-accent: 21 48% 61%;
-    --shadow-panel: 0 1px 0 hsl(0 0% 100% / 0.04), 0 18px 48px hsl(0 0% 0% / 0.2);
+    --bg: #11131a;
+    --surface: #181b24;
+    --elevated: #20242e;
+    --border: #2f3542;
+    --text: #f1ebec;
+    --text-muted: #a29fa5;
+    --brand-primary: #d8a0ab;
+    --brand-accent: #b87a86;
+    --selection-bg: #d8a0ab;
+    --selection-text: #11131a;
+    --focus-ring: #b87a86;
   }
 
   html {
@@ -44,51 +44,56 @@
   }
 
   body {
-    @apply min-h-screen font-body text-text;
-    background-color: hsl(var(--bg));
+    @apply min-h-screen font-body text-text bg-bg;
   }
 
   ::selection {
-    color: hsl(var(--selection-text));
-    background: hsl(var(--selection-bg));
+    color: var(--selection-text);
+    background: var(--selection-bg);
   }
 
   :where(a, button, input, textarea, select):focus-visible {
-    outline: 2px solid hsl(var(--focus-ring));
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
   }
 
   .skip-link {
-    position: fixed;
-    top: -120px;
-    left: 16px;
-    z-index: 80;
-    padding: 10px 14px;
-    border-radius: 999px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: hsl(var(--text));
-    background: hsl(var(--surface));
-    border: 1px solid hsl(var(--border));
-    transition: top 0.15s ease;
-  }
-
-  .skip-link:focus-visible {
-    top: 16px;
+    @apply fixed -top-[120px] left-4 z-50 px-4 py-2 text-sm font-semibold text-text bg-surface border border-border transition-all focus-visible:top-4;
   }
 }
 
 @layer components {
+  /* Typography utilities */
+  .display-hero {
+    @apply font-heading text-6xl md:text-[120px] font-light leading-[1.0] tracking-[-0.04em];
+  }
+  .headline-xl {
+    @apply font-heading text-4xl md:text-[64px] font-normal leading-[1.1] tracking-[-0.02em];
+  }
+  .headline-md {
+    @apply font-heading text-2xl md:text-[32px] font-medium leading-[1.2];
+  }
+  .body-lg {
+    @apply font-body text-lg md:text-[20px] font-normal leading-[1.6] tracking-[-0.01em];
+  }
+  .body-md {
+    @apply font-body text-base font-normal leading-[1.6];
+  }
+  .label-caps {
+    @apply font-body text-xs font-semibold leading-[1.0] tracking-[0.1em] uppercase;
+  }
+
+  /* Structural elements */
   .panel {
-    @apply bg-surface border border-border shadow-panel;
+    @apply bg-surface border border-border;
   }
 
   .panel-hover {
-    @apply panel transition-[background-color,border-color,transform] duration-150 hover:-translate-y-0.5 hover:border-brand-primary/50;
+    @apply panel transition-colors duration-150 hover:border-brand-primary;
   }
 
   .eyebrow {
-    @apply font-mono text-xs font-medium uppercase tracking-[0.22em] text-brand-accent;
+    @apply label-caps text-brand-accent;
   }
 
   .rule {
@@ -96,27 +101,28 @@
   }
 
   .tag {
-    @apply inline-flex items-center border border-border bg-elevated px-2.5 py-1 text-xs font-medium text-text-muted;
+    @apply inline-flex items-center border border-border px-2.5 py-1 label-caps text-text-muted bg-transparent;
   }
 
+  /* Buttons */
   .button-primary {
-    @apply inline-flex items-center justify-center border border-brand-primary bg-brand-primary px-5 py-3 text-sm font-semibold text-surface transition-colors duration-150 hover:bg-text hover:border-text;
+    @apply inline-flex items-center justify-center border border-brand-primary bg-brand-primary px-6 py-4 label-caps text-surface transition-colors duration-150 hover:bg-transparent hover:text-brand-primary;
   }
 
   .button-secondary {
-    @apply inline-flex items-center justify-center border border-border bg-surface px-5 py-3 text-sm font-semibold text-text transition-colors duration-150 hover:border-brand-primary hover:text-brand-primary;
+    @apply inline-flex items-center justify-center border border-border bg-transparent px-6 py-4 label-caps text-text transition-colors duration-150 hover:border-brand-primary;
   }
 
   .button-ghost {
-    @apply inline-flex items-center justify-center px-3 py-2 text-sm font-semibold text-text-muted transition-colors duration-150 hover:text-text;
+    @apply inline-flex items-center justify-center px-4 py-3 label-caps text-text-muted transition-colors duration-150 hover:text-text;
   }
 
   .icon-frame {
-    @apply inline-flex h-10 w-10 items-center justify-center border border-border bg-elevated text-brand-primary;
+    @apply inline-flex h-12 w-12 items-center justify-center border border-border bg-transparent text-brand-primary;
   }
 
   .social-link {
-    @apply inline-flex h-11 w-11 items-center justify-center border border-border bg-surface text-text-muted transition-colors duration-150 hover:border-brand-primary hover:text-brand-primary;
+    @apply inline-flex h-12 w-12 items-center justify-center border border-border bg-transparent text-text-muted transition-colors duration-150 hover:border-brand-primary hover:text-brand-primary;
   }
 }
 
@@ -126,17 +132,7 @@
   }
 
   .project-placeholder {
-    background-color: hsl(var(--elevated));
-    box-shadow: inset 0 0 0 1px hsl(var(--border));
-  }
-
-  .dark .astro-code,
-  .dark .astro-code span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
+    @apply bg-elevated border border-border;
   }
 }
 
@@ -145,11 +141,11 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--bg));
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
+  background: var(--border);
 }
 
 @media (prefers-reduced-motion: no-preference) {

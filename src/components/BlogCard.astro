@@ -1,43 +1,26 @@
 ---
-import Icon from '@/components/Icon.astro';
 import type { BlogPost } from '@/lib/blog';
-import { formatPostDate, getReadingTime, getLanguageLabel } from '@/lib/blog';
+import { formatPostDate } from '@/lib/blog';
 
 interface Props {
   post: BlogPost;
-  featured?: boolean;
-  readLabel?: string;
-  readTimeSuffix?: string;
 }
 
-const { post, featured = false, readLabel = 'Read post', readTimeSuffix = 'min read' } = Astro.props;
+const { post } = Astro.props;
 ---
 
-<a
-  href={`/blog/${post.id}/`}
-  class:list={[
-    'panel-hover group grid gap-5 p-5',
-    featured ? 'md:grid-cols-[10rem_1fr]' : '',
-  ]}
->
-  <div class="flex items-start justify-between gap-4 md:block">
-    <time class="font-mono text-xs uppercase tracking-[0.18em] text-text-muted" datetime={post.data.publishedAt.toISOString()}>
-      {formatPostDate(post.data.publishedAt)}
-    </time>
-    <span class="tag md:mt-4">{getLanguageLabel(post.data.language)}</span>
-  </div>
-
-  <div>
-    <h3 class:list={['font-heading font-semibold tracking-[-0.03em] text-text group-hover:text-brand-primary', featured ? 'text-3xl' : 'text-xl']}>
-      {post.data.title}
-    </h3>
-    <p class="mt-3 text-sm leading-6 text-text-muted">{post.data.description}</p>
-    <div class="mt-5 flex flex-wrap gap-2">
-      {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
-      <span class="tag">{getReadingTime(post.body ?? '', readTimeSuffix)}</span>
+<article class="group border-b border-brand-primary/10 pb-16">
+  <a class="block" href={`/blog/${post.id}/`}>
+    <div class="mb-4">
+      <time class="label-caps text-text-muted uppercase tracking-widest" datetime={post.data.publishedAt.toISOString()}>
+        {formatPostDate(post.data.publishedAt)}
+      </time>
     </div>
-    <span class="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-brand-primary">
-      {readLabel} <Icon name="arrow-up-right" size={15} />
-    </span>
-  </div>
-</a>
+    <h2 class="headline-md text-brand-primary mb-4 transition-all duration-300">
+      {post.data.title}
+    </h2>
+    <p class="body-md text-text-muted max-w-3xl leading-relaxed">
+      {post.data.description}
+    </p>
+  </a>
+</article>

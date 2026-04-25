@@ -8,10 +8,10 @@ interface Props {
 const { eyebrow, title, description } = Astro.props;
 ---
 
-<div class="mb-10 max-w-3xl">
-  {eyebrow ? <p class="eyebrow mb-3">{eyebrow}</p> : null}
-  <h2 class="font-heading text-3xl font-semibold leading-tight tracking-[-0.03em] text-text md:text-5xl">
+<div class="mb-12 max-w-4xl">
+  {eyebrow ? <p class="eyebrow mb-4">{eyebrow}</p> : null}
+  <h2 class="headline-xl text-brand-primary">
     {title}
   </h2>
-  {description ? <p class="mt-4 max-w-2xl text-base leading-7 text-text-muted">{description}</p> : null}
+  {description ? <p class="mt-6 max-w-2xl body-lg text-text-muted">{description}</p> : null}
 </div>

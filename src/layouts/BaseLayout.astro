@@ -1,7 +1,6 @@
 ---
 import Header from '@/components/Header.astro';
 import LocaleRedirect from '@/components/LocaleRedirect.astro';
-import Icon from '@/components/Icon.astro';
 import { defaultLocale, getAlternateLocale, getLocalePath, getSiteContent } from '@/data/site-content';
 import type { Locale, SiteContent } from '@/data/site-content.schema';
 import { hasPublicResume } from '@/lib/resume';
@@ -31,7 +30,6 @@ const canonicalUrl = new URL(currentPath, Astro.site ?? Astro.url.origin).toStri
 const alternateLocale = getAlternateLocale(locale);
 const alternateUrl = new URL(getLocalePath(alternateLocale), Astro.site ?? Astro.url.origin).toString();
 const defaultUrl = new URL(getLocalePath(defaultLocale), Astro.site ?? Astro.url.origin).toString();
-const socialIconFor = { github: 'github', linkedin: 'linkedin', mail: 'mail' } as const;
 const resumeAvailable = hasPublicResume();
 ---
 
@@ -73,23 +71,46 @@ const resumeAvailable = hasPublicResume();
         <slot />
       </main>
 
-      <footer class="border-t border-border px-4 py-10">
-        <div class="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+      <footer class="mt-32 border-t border-border py-12">
+        <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-8">
           <div>
-            <p class="font-mono text-xs uppercase tracking-[0.2em] text-text-muted">
-              {new Date().getFullYear()} {content.hero.name}
+            <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text">
+              © {new Date().getFullYear()} DESIGN MONOGRAPH. ALL RIGHTS RESERVED.
             </p>
-            <p class="mt-2 text-sm text-text-muted">{content.seo.footerNote}</p>
           </div>
-          <div class="flex gap-3">
-            {content.hero.socialLinks.map(({ platform, href, label }) => (
-              <a href={href} aria-label={label} class="social-link">
-                <Icon name={socialIconFor[platform]} size={18} />
-              </a>
-            ))}
+          <div class="flex gap-6">
+            <a href="https://github.com" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">GITHUB</a>
+            <a href="https://linkedin.com" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">LINKEDIN</a>
+            <a href="/rss.xml" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">RSS</a>
           </div>
         </div>
       </footer>
     </div>
+
+    <script is:inline define:vars={{ defaultLocale }}>
+      const localeLinks = document.querySelectorAll('[data-locale-link]');
+      localeLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+          localStorage.setItem('locale', link.dataset.locale || defaultLocale);
+        });
+      });
+
+      const applyThemeIcon = () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.querySelectorAll('[data-theme-icon="dark"]').forEach((icon) => icon.toggleAttribute('hidden', isDark));
+        document.querySelectorAll('[data-theme-icon="light"]').forEach((icon) => icon.toggleAttribute('hidden', !isDark));
+      };
+
+      document.querySelectorAll('[data-theme-toggle]').forEach((toggle) => {
+        toggle.addEventListener('click', () => {
+          const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+          document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+          localStorage.setItem('theme', nextTheme);
+          applyThemeIcon();
+        });
+      });
+
+      applyThemeIcon();
+    </script>
   </body>
 </html>

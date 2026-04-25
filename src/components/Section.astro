@@ -15,7 +15,7 @@ const {
   tinted = false,
 } = Astro.props;
 
-const spacingClass = spacing === 'tight' ? 'py-16' : 'py-24';
+const spacingClass = spacing === 'tight' ? 'py-16' : 'py-40';
 ---
 
 <section id={id} class:list={[spacingClass, 'px-4', tinted && 'bg-elevated/45', className]}>

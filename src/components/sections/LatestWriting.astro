@@ -22,7 +22,7 @@ const { posts, content } = Astro.props;
 
   <div class="grid gap-4">
     {posts.map((post) => (
-      <BlogCard post={post} readLabel={content.common.readPostLabel} readTimeSuffix={content.common.readTimeSuffix} />
+      <BlogCard post={post} />
     ))}
   </div>
 </Section>

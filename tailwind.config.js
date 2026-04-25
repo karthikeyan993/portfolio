@@ -7,30 +7,30 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        body: ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        heading: ['"Newsreader"', 'serif'],
+        body: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
-        bg: 'hsl(var(--bg))',
-        surface: 'hsl(var(--surface))',
-        elevated: 'hsl(var(--elevated))',
-        border: 'hsl(var(--border))',
+        bg: 'var(--bg)',
+        surface: 'var(--surface)',
+        elevated: 'var(--elevated)',
+        border: 'var(--border)',
         text: {
-          DEFAULT: 'hsl(var(--text))',
-          muted: 'hsl(var(--text-muted))',
+          DEFAULT: 'var(--text)',
+          muted: 'var(--text-muted)',
         },
         brand: {
-          primary: 'hsl(var(--brand-primary))',
-          accent: 'hsl(var(--brand-accent))',
+          primary: 'var(--brand-primary)',
+          accent: 'var(--brand-accent)',
         },
       },
-      borderRadius: {
-        xl: 'var(--radius-xl)',
-        '2xl': 'var(--radius-2xl)',
-      },
-      boxShadow: {
-        panel: 'var(--shadow-panel)',
+      spacing: {
+        'content-gap': '4rem',
+        'stack-sm': '1rem',
+        gutter: '2rem',
+        'section-gap': '10rem',
+        'container-max': '1280px',
       },
     },
   },
