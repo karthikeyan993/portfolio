@@ -1,8 +1,8 @@
 {
   "locale": "de",
   "seo": {
-    "title": "Alex Chen | Full Stack Engineer",
-    "description": "Full-Stack-Engineer für schnelle, zuverlässige Produktoberflächen und pragmatische Websysteme.",
+    "title": "Karthikeyan | Software Engineer",
+    "description": "Software-Ingenieur für schnelle, zuverlässige Produktoberflächen und pragmatische Websysteme.",
     "footerNote": "Als statische Astro-Seite mit Performance-Fokus gebaut."
   },
   "nav": [
@@ -14,9 +14,9 @@
   ],
   "hero": {
     "greeting": "Hallo, ich bin",
-    "name": "Alex Chen",
-    "initials": "AC",
-    "titles": ["Full Stack Engineer", "Performance-orientierter Entwickler", "Deutsch B1"],
+    "name": "Karthikeyan",
+    "initials": "V",
+    "titles": ["Software Engineer", "Performance-orientierter Entwickler", "Lernt Deutsch"],
     "summary": "Ich baue zuverlässige Webprodukte mit Fokus auf Klarheit, schnelle Oberflächen und wartbare Systeme. Ich lebe in San Francisco und bin offen für fokussierte Produktentwicklung.",
     "ctaLabel": "Projekte ansehen",
     "ctaHref": "#projects",

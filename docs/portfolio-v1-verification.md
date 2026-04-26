@@ -1,6 +1,6 @@
 # Portfolio V1 Verification Log
 
-Date: 2026-04-23
+Date: 2026-04-26
 
 ## Automated Gates
 Command run:
@@ -9,13 +9,19 @@ Command run:
 Result summary:
 - `lint`: pass
 - `typecheck`: pass
-- `test`: pass (`3` files, `6` tests)
+- `test`: pass
 - `build`: pass
 
 ## Integration Checks
 - All required sections render from typed JSON content (`siteContent`) through section props.
 - Header navigation anchors target all configured section IDs and now include active-section highlighting.
-- Mobile navigation is implemented with toggle, keyboard escape close, and link close behavior.
+- **Redesigned mobile navigation** implemented with compact pill trigger, dropdown panel, and full interactive behavior:
+  - Toggle menu via hamburger/x icon.
+  - Close on outside click.
+  - Close on Escape key.
+  - Close on link selection.
+  - Close on viewport resize to `md+`.
+  - Body scroll lock when menu is open.
 - Contact flow supports:
   - Netlify form attributes (`data-netlify`, named form)
   - Honeypot anti-spam field (`bot-field`)
@@ -24,12 +30,14 @@ Result summary:
 
 ## Manual QA Summary
 - Responsive behavior:
-  - Desktop navigation + CTA in header
-  - Mobile menu toggle and in-menu CTA path
+  - Desktop navigation pill with full links and controls.
+  - Mobile compact pill with theme toggle and menu trigger.
+  - Mobile dropdown panel with primary links and locale toggle.
 - Keyboard/accessibility behavior:
   - Skip link to `#main-content`
   - Visible `:focus-visible` outline/ring on interactive controls
   - Header/main/footer landmarks present
+  - `aria-expanded`, `aria-controls`, and `aria-label` on mobile menu trigger.
 - Reduced motion behavior:
   - Existing reduced-motion safeguards preserved in motion components (including hero title rotation suppression)
 

@@ -15,7 +15,7 @@
   "hero": {
     "greeting": "Hello, I'm",
     "name": "Karthikeyan",
-    "initials": "V",
+    "initials": "Vijayan",
     "titles": ["Software Engineer", "Performance-minded Builder", "Learning German"],
     "summary": "I build dependable web products with a bias for clarity, fast interfaces, and maintainable systems. Based in San Francisco and open to focused product engineering work.",
     "ctaLabel": "View Projects",
