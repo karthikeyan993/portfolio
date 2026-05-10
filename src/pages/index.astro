@@ -1,20 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import HomePage from '@/components/HomePage.astro';
+import HomeLayout from '@/layouts/HomeLayout.astro';
+import { getCollection } from 'astro:content';
 import { getSiteContent } from '@/data/site-content';
-import { hasPublicResume } from '@/lib/resume';
+import { getLatestPosts, filterPostsByLocale } from '@/lib/blog';
 
 const content = getSiteContent('en');
-const resumeAvailable = hasPublicResume();
+const latestPosts = getLatestPosts(filterPostsByLocale(await getCollection('blog'), 'en'), 2);
 ---
 
-<BaseLayout
-  title={content.seo.title}
-  description={content.seo.description}
-  currentPath={Astro.url.pathname}
-  locale="en"
-  content={content}
-  enableLocaleRedirect
->
-  <HomePage content={content} resumeAvailable={resumeAvailable} />
+<BaseLayout enableLocaleRedirect>
+  <HomeLayout content={content} locale="en" posts={latestPosts} />
 </BaseLayout>

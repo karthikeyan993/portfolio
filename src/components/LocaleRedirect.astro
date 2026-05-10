@@ -1,10 +1,11 @@
 <script>
+  import { STORAGE_KEYS } from '@/lib/constants';
   (() => {
-    const storedLocale = localStorage.getItem('locale');
+    const storedLocale = localStorage.getItem(STORAGE_KEYS.locale);
     if (storedLocale) return;
     const browserLocale = navigator.language || '';
     if (browserLocale.toLowerCase().startsWith('de') && window.location.pathname === '/') {
-      localStorage.setItem('locale', 'de');
+      localStorage.setItem(STORAGE_KEYS.locale, 'de');
       window.location.replace('/de/');
     }
   })();

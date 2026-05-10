@@ -2,24 +2,29 @@
 interface Props {
   id?: string;
   class?: string;
-  containerClass?: string;
-  spacing?: 'default' | 'tight';
+  containerClass?: 'max-w-6xl' | 'max-w-7xl' | string;
+  spacing?: 'default' | 'tight' | 'hero' | 'loose';
   tinted?: boolean;
 }
 
 const {
   id,
   class: className = '',
-  containerClass = '',
+  containerClass = 'max-w-6xl',
   spacing = 'default',
   tinted = false,
 } = Astro.props;
 
-const spacingClass = spacing === 'tight' ? 'py-16' : 'py-40';
+const spacingClass = {
+  default: 'py-16 md:py-24',
+  loose: 'py-40',
+  hero: 'pt-20 md:pt-32 pb-16 md:pb-24',
+  tight: 'py-16',
+}[spacing];
 ---
 
-<section id={id} class:list={[spacingClass, 'px-4', tinted && 'bg-elevated/45', className]}>
-  <div class:list={['mx-auto max-w-6xl', containerClass]}>
+<section id={id} class:list={[spacingClass, tinted && 'bg-elevated/45', className]}>
+  <div class:list={['mx-auto px-4 md:px-8', containerClass]}>
     <slot />
   </div>
 </section>

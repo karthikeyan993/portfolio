@@ -1,139 +1,56 @@
 ---
 import Header from '@/components/Header.astro';
 import LocaleRedirect from '@/components/LocaleRedirect.astro';
-import { defaultLocale, getAlternateLocale, getLocalePath, getSiteContent } from '@/data/site-content';
+import { defaultLocale, getSiteContent } from '@/data/site-content';
 import type { Locale, SiteContent } from '@/data/site-content.schema';
-import { hasPublicResume } from '@/lib/resume';
-import Icon from '@/components/Icon.astro';
+import { buildPageSeo } from '@/lib/seo';
+import SeoHead from '@/components/seo/SeoHead.astro';
+import ThemeBootstrap from '@/components/ThemeBootstrap.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
+import ScrollToTopButton from '@/components/ScrollToTopButton.astro';
 import '@/index.css';
 
 interface Props {
   title?: string;
   description?: string;
   currentPath?: string;
+  image?: string;
+  noindex?: boolean;
   ogType?: 'website' | 'article';
   locale?: Locale;
   content?: SiteContent;
   enableLocaleRedirect?: boolean;
+  publishedTime?: Date;
+  tags?: string[];
+  updatedTime?: Date;
+  alternatePaths?: Partial<Record<Locale, string>>;
 }
 
 const {
-  locale = defaultLocale,
-  content = getSiteContent(locale),
-  title = content.seo.title,
-  description = content.seo.description,
-  currentPath = Astro.url.pathname,
-  ogType = 'website',
-  enableLocaleRedirect = false,
+  locale = defaultLocale, content = getSiteContent(locale),
+  title = content.seo.title, description = content.seo.description,
+  currentPath = Astro.url.pathname, image, noindex = false,
+  ogType = 'website', enableLocaleRedirect = false,
+  publishedTime, tags, updatedTime, alternatePaths,
 } = Astro.props;
 
-const canonicalUrl = new URL(currentPath, Astro.site ?? Astro.url.origin).toString();
-const alternateLocale = getAlternateLocale(locale);
-const alternateUrl = new URL(getLocalePath(alternateLocale), Astro.site ?? Astro.url.origin).toString();
-const defaultUrl = new URL(getLocalePath(defaultLocale), Astro.site ?? Astro.url.origin).toString();
-const resumeAvailable = hasPublicResume();
+const pageSeo = buildPageSeo({ baseUrl: Astro.site ?? Astro.url.origin, content, currentPath, description, image, locale, noindex, ogType, publishedTime, tags, title, updatedTime, alternatePaths });
 ---
 
 <!doctype html>
 <html lang={locale}>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content={ogType} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <link rel="canonical" href={canonicalUrl} />
-    <link rel="alternate" hreflang={locale} href={canonicalUrl} />
-    <link rel="alternate" hreflang={alternateLocale} href={alternateUrl} />
-    <link rel="alternate" hreflang="x-default" href={defaultUrl} />
-    <link rel="alternate" type="application/rss+xml" title="Blog RSS" href="/rss.xml" />
-    <script is:inline>
-      (() => {
-        const key = 'theme';
-        const stored = localStorage.getItem(key);
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-      })();
-    </script>
+    <SeoHead content={content} title={title} description={description} ogType={ogType} pageSeo={pageSeo} publishedTime={publishedTime} updatedTime={updatedTime} tags={tags} />
+    <ThemeBootstrap />
     {enableLocaleRedirect ? <LocaleRedirect /> : null}
-    <title>{title}</title>
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to content</a>
     <div class="min-h-screen">
-      <Header content={content} locale={locale} currentPath={currentPath} resumeAvailable={resumeAvailable} />
-
-      <main id="main-content" tabindex="-1">
-        <slot />
-      </main>
-
-      <footer class="mt-32 border-t border-border py-12">
-        <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-8">
-          <div>
-            <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text">
-              © {new Date().getFullYear()} DESIGN MONOGRAPH. ALL RIGHTS RESERVED.
-            </p>
-          </div>
-          <div class="flex gap-6">
-            <a href="https://github.com" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">GITHUB</a>
-            <a href="https://linkedin.com" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">LINKEDIN</a>
-            <a href="/rss.xml" class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">RSS</a>
-          </div>
-        </div>
-      </footer>
-
-      <button
-        id="scroll-to-top"
-        class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-bg border border-border/60 shadow-md transition-all duration-500 translate-y-20 opacity-0 hover:border-brand-primary text-brand-primary cursor-pointer pointer-events-auto focus:outline-none"
-        aria-label="Scroll to top"
-      >
-        <Icon name="arrow-left" class="rotate-90" size={20} />
-      </button>
+      <Header content={content} locale={locale} currentPath={currentPath} />
+      <main id="main-content" tabindex="-1"><slot /></main>
+      <SiteFooter content={content} locale={locale} />
+      <ScrollToTopButton />
     </div>
-
-    <script is:inline define:vars={{ defaultLocale }}>
-      const localeLinks = document.querySelectorAll('[data-locale-link]');
-      localeLinks.forEach((link) => {
-        link.addEventListener('click', () => {
-          localStorage.setItem('locale', link.dataset.locale || defaultLocale);
-        });
-      });
-
-      const applyThemeIcon = () => {
-        const isDark = document.documentElement.classList.contains('dark');
-        document.querySelectorAll('[data-theme-icon="dark"]').forEach((icon) => icon.toggleAttribute('hidden', isDark));
-        document.querySelectorAll('[data-theme-icon="light"]').forEach((icon) => icon.toggleAttribute('hidden', !isDark));
-      };
-
-      document.querySelectorAll('[data-theme-toggle]').forEach((toggle) => {
-        toggle.addEventListener('click', () => {
-          const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
-          document.documentElement.classList.toggle('dark', nextTheme === 'dark');
-          localStorage.setItem('theme', nextTheme);
-          applyThemeIcon();
-        });
-      });
-
-      applyThemeIcon();
-
-      const scrollToTopBtn = document.getElementById('scroll-to-top');
-      if (scrollToTopBtn) {
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 400) {
-            scrollToTopBtn.classList.remove('translate-y-20', 'opacity-0');
-          } else {
-            scrollToTopBtn.classList.add('translate-y-20', 'opacity-0');
-          }
-        });
-        scrollToTopBtn.addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-    </script>
   </body>
 </html>

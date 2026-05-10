@@ -3,14 +3,17 @@ import Icon from '@/components/Icon.astro';
 import Section from '@/components/Section.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import type { SiteContent } from '@/data/site-content.schema';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { CONTACT_FORM_NAME } from '@/lib/constants';
 
 interface Props {
   content: SiteContent;
 }
 
 const { content } = Astro.props;
-const formName = 'portfolio-contact';
+const formName = CONTACT_FORM_NAME;
 const showSuccess = Astro.url.searchParams.get('contact') === 'success';
+const formAction = `${getRelativeLocaleUrl(content.locale, '/')}?contact=success#contact`;
 const iconFor = {
   mail: 'mail',
   mapPin: 'map-pin',
@@ -20,6 +23,9 @@ const socialIconFor = {
   linkedin: 'linkedin',
   github: 'github',
 } as const;
+const infoCards = content.contact.infoCards.filter((card) => card.label && card.value);
+const contactLinks = content.contact.links.filter((link) => link.href && link.label);
+const showContactPanel = content.contact.formEnabled || showSuccess || contactLinks.length > 0;
 ---
 
 <Section id="contact" tinted>
@@ -31,7 +37,7 @@ const socialIconFor = {
         description={content.contact.description}
       />
       <div class="space-y-4">
-        {content.contact.infoCards.map(({ icon, label, value, href }) => (
+        {infoCards.map(({ icon, label, value, href }) => (
           <div class="flex items-center gap-4 border-t border-border pt-4">
             <span class="icon-frame">
               <Icon name={iconFor[icon]} size={18} />
@@ -49,7 +55,7 @@ const socialIconFor = {
       </div>
     </div>
 
-    <div class="panel p-6 md:p-8">
+    {showContactPanel ? <div class="panel p-6 md:p-8">
       {showSuccess ? (
         <div class="border border-brand-primary/40 bg-elevated p-4 text-sm text-text">
           <p class="font-semibold">{content.contact.successTitle}</p>
@@ -62,9 +68,11 @@ const socialIconFor = {
           name={formName}
           method="POST"
           data-netlify="true"
+          data-contact-form
           netlify-honeypot="bot-field"
-          action="/?contact=success#contact"
+          action={formAction}
           class="mt-6 space-y-4 first:mt-0"
+          novalidate
         >
           <input type="hidden" name="form-name" value={formName} />
           <p class="hidden" aria-hidden="true">
@@ -74,38 +82,47 @@ const socialIconFor = {
             </label>
           </p>
 
-          <div>
+          <div class="contact-field">
             <label for="name" class="mb-1 block text-sm font-semibold text-text">{content.contact.nameLabel}</label>
             <input
               id="name"
               name="name"
               type="text"
               required
-              class="w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              data-validate-field
+              class="contact-input w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
               placeholder={content.contact.nameLabel}
+              aria-describedby="contact-error-name"
             />
+            <p id="contact-error-name" data-error-for="name" class="contact-error-float" data-visible="false" aria-live="polite"></p>
           </div>
-          <div>
+          <div class="contact-field">
             <label for="email" class="mb-1 block text-sm font-semibold text-text">{content.contact.emailLabel}</label>
             <input
               id="email"
               name="email"
               type="email"
               required
-              class="w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              data-validate-field
+              class="contact-input w-full border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
               placeholder={content.contact.email}
+              aria-describedby="contact-error-email"
             />
+            <p id="contact-error-email" data-error-for="email" class="contact-error-float" data-visible="false" aria-live="polite"></p>
           </div>
-          <div>
+          <div class="contact-field">
             <label for="message" class="mb-1 block text-sm font-semibold text-text">{content.contact.messageLabel}</label>
             <textarea
               id="message"
               name="message"
               required
               rows="5"
-              class="w-full resize-none border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
+              data-validate-field
+              class="contact-input w-full resize-none border border-border bg-bg px-4 py-3 text-text outline-none transition-colors focus:border-brand-accent"
               placeholder={content.contact.messagePlaceholder}
+              aria-describedby="contact-error-message"
             ></textarea>
+            <p id="contact-error-message" data-error-for="message" class="contact-error-float" data-visible="false" aria-live="polite"></p>
           </div>
 
           <button type="submit" class="button-primary w-full gap-2">
@@ -113,17 +130,95 @@ const socialIconFor = {
             <Icon name="send" size={16} />
           </button>
         </form>
-      ) : (
-        <p class="text-text-muted">Contact form is currently disabled.</p>
-      )}
+      ) : null}
 
-      <div class="mt-6 flex gap-3 border-t border-border pt-6">
-        {content.contact.links.map(({ platform, href, label }) => (
+      {contactLinks.length > 0 ? <div class="mt-6 flex gap-3 border-t border-border pt-6">
+        {contactLinks.map(({ platform, href, label }) => (
           <a href={href} aria-label={label} class="social-link">
             <Icon name={socialIconFor[platform]} size={18} />
           </a>
         ))}
-      </div>
-    </div>
+      </div> : null}
+    </div> : null}
   </div>
 </Section>
+
+<script>
+  function setupContactValidation() {
+    const form = document.querySelector('[data-contact-form]') as HTMLFormElement | null;
+    if (!form || form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
+    const fields = Array.from(form.querySelectorAll('[data-validate-field]')) as Array<HTMLInputElement | HTMLTextAreaElement>;
+    const touched = new Set<string>();
+
+    const getLabel = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const label = form.querySelector(`label[for="${field.id}"]`);
+      return label?.textContent?.trim() || field.name;
+    };
+
+    const getErrorElement = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      return form.querySelector(`[data-error-for="${field.name}"]`) as HTMLParagraphElement | null;
+    };
+
+    const getFieldError = (field: HTMLInputElement | HTMLTextAreaElement) => {
+      const value = field.value.trim();
+      const label = getLabel(field);
+
+      if (!value) return `Please enter your ${label.toLowerCase()}.`;
+      if (field.name === 'name' && value.length < 2) return 'Please enter at least 2 characters for your name.';
+      if (field.name === 'email' && field.validity.typeMismatch) return 'Please enter a valid email address, for example: name@example.com.';
+      if (field.name === 'message' && value.length < 10) return 'Please add a bit more detail to your message (at least 10 characters).';
+      return '';
+    };
+
+    const applyErrorState = (field: HTMLInputElement | HTMLTextAreaElement, message: string, force = false) => {
+      const shouldShow = force || touched.has(field.name);
+      const hasError = Boolean(message) && shouldShow;
+      const errorEl = getErrorElement(field);
+
+      field.dataset.invalid = hasError ? 'true' : 'false';
+      field.setAttribute('aria-invalid', hasError ? 'true' : 'false');
+
+      if (!errorEl) return hasError;
+      errorEl.textContent = hasError ? message : '';
+      errorEl.dataset.visible = hasError ? 'true' : 'false';
+      return hasError;
+    };
+
+    const validateField = (field: HTMLInputElement | HTMLTextAreaElement, force = false) => {
+      const message = getFieldError(field);
+      return applyErrorState(field, message, force);
+    };
+
+    fields.forEach((field) => {
+      field.addEventListener('input', () => {
+        touched.add(field.name);
+        validateField(field);
+      });
+
+      field.addEventListener('blur', () => {
+        touched.add(field.name);
+        validateField(field, true);
+      });
+    });
+
+    form.addEventListener('submit', (event) => {
+      let firstInvalid: HTMLInputElement | HTMLTextAreaElement | undefined;
+
+      fields.forEach((field) => {
+        touched.add(field.name);
+        const invalid = validateField(field, true);
+        if (invalid && !firstInvalid) firstInvalid = field;
+      });
+
+      if (firstInvalid) {
+        event.preventDefault();
+        firstInvalid.focus();
+      }
+    });
+  }
+
+  setupContactValidation();
+  document.addEventListener('astro:after-swap', setupContactValidation);
+</script>

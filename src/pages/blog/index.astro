@@ -3,15 +3,19 @@ import { getCollection } from 'astro:content';
 import BlogCard from '@/components/BlogCard.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getSiteContent } from '@/data/site-content';
-import { isPublishedPost, sortPostsByPublishedDate } from '@/lib/blog';
+import { filterPublishedPosts, filterPostsByLocale, sortPostsByPublishedDate, getBlogPath } from '@/lib/blog';
 
 const content = getSiteContent('en');
-const posts = sortPostsByPublishedDate((await getCollection('blog')).filter(isPublishedPost));
+const posts = sortPostsByPublishedDate(filterPostsByLocale(filterPublishedPosts(await getCollection('blog')), 'en'));
 const title = `Blog | ${content.hero.name}`;
 const description = content.writing.description;
+const alternatePaths = {
+  en: getBlogPath('en'),
+  de: getBlogPath('de'),
+};
 ---
 
-<BaseLayout title={title} description={description} currentPath={Astro.url.pathname} locale="en" content={content}>
+<BaseLayout title={title} description={description} alternatePaths={alternatePaths}>
   <div class="mx-auto max-w-7xl px-4 md:px-8 pt-20 md:pt-32 pb-16 md:pb-24">
     <header class="mb-20 md:mb-32">
       <h1 class="display-hero text-brand-primary mb-6">{content.writing.title}</h1>
@@ -22,13 +26,13 @@ const description = content.writing.description;
       <div class="md:col-span-8">
         {posts.length === 0 ? (
           <div class="py-8">
-            <h2 class="headline-md text-brand-primary">No posts yet</h2>
-            <p class="mt-2 text-text-muted">Check back soon for new writing.</p>
+            <h2 class="headline-md text-brand-primary">{content.common.noPostsTitle}</h2>
+            <p class="mt-2 text-text-muted">{content.common.noPostsDescription}</p>
           </div>
         ) : (
           <div class="space-y-16">
             {posts.map((post) => (
-              <BlogCard post={post} />
+              <BlogCard post={post} locale="en" />
             ))}
           </div>
         )}

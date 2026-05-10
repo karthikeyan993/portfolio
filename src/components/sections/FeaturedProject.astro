@@ -11,6 +11,7 @@ interface Props {
 }
 
 const { content, tinted = false } = Astro.props;
+const tags = content.tags.filter((tag) => tag.trim());
 ---
 
 <Section tinted={tinted}>
@@ -30,9 +31,11 @@ const { content, tinted = false } = Astro.props;
         <h3 class="mt-4 headline-xl text-brand-primary">{content.title}</h3>
         <p class="mt-8 body-lg text-text-muted leading-relaxed">{content.summary}</p>
 
-        <div class="mt-10 flex flex-wrap gap-2">
-          {content.tags.map((tech) => <span class="tag">{tech}</span>)}
-        </div>
+        {tags.length > 0 ? (
+          <div class="mt-10 flex flex-wrap gap-2">
+            {tags.map((tech) => <span class="tag">{tech}</span>)}
+          </div>
+        ) : null}
 
         <div class="mt-12 flex flex-wrap gap-4">
           {content.links.live ? (

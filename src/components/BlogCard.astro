@@ -1,19 +1,22 @@
 ---
 import type { BlogPost } from '@/lib/blog';
-import { formatPostDate } from '@/lib/blog';
+import { formatPostDate, getPostPath } from '@/lib/blog';
+import type { Locale } from '@/data/site-content.schema';
 
 interface Props {
   post: BlogPost;
+  locale: Locale;
 }
 
-const { post } = Astro.props;
+const { post, locale } = Astro.props;
+const postPath = getPostPath(post, locale);
 ---
 
 <article class="group border-b border-brand-primary/10 pb-16">
-  <a class="block" href={`/blog/${post.id}/`}>
+  <a class="block" href={postPath}>
     <div class="mb-4">
       <time class="label-caps text-text-muted uppercase tracking-widest" datetime={post.data.publishedAt.toISOString()}>
-        {formatPostDate(post.data.publishedAt)}
+        {formatPostDate(post.data.publishedAt, locale)}
       </time>
     </div>
     <h2 class="headline-md text-brand-primary mb-4 transition-all duration-300">

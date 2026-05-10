@@ -1,26 +1,41 @@
 ---
-import type { HeroContent } from '@/data/site-content.schema';
+import type { HeroContent, ResumeContent } from '@/data/site-content.schema';
+import ButtonLink from '@/components/ButtonLink.astro';
+import Icon from '@/components/Icon.astro';
+import ResumeDownloadLink from '@/components/ResumeDownloadLink.astro';
+import Section from '@/components/Section.astro';
 
 interface Props {
   content: HeroContent;
+  resume: ResumeContent;
 }
 
-const { content } = Astro.props;
+const { content, resume } = Astro.props;
+const primaryTitle = content.titles[0];
+const hasPrimaryCta = Boolean(content.ctaLabel.trim() && content.ctaHref.trim());
 ---
 
-<section class="pt-20 md:pt-32 pb-16 md:pb-24">
-  <div class="mx-auto max-w-7xl px-4 md:px-8">
+<Section spacing="hero" containerClass="max-w-7xl">
+    {content.greeting ? <p class="eyebrow mb-6">{content.greeting}</p> : null}
     <h1 class="display-hero text-brand-primary flex flex-col">
-      <span>{content.name}</span>
-      <span class="italic font-light">{content.titles[0]}</span>
+      {content.name ? <span>{content.name}</span> : null}
+      {primaryTitle ? <span class="italic font-light">{primaryTitle}</span> : null}
     </h1>
     
-    <div class="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-1 lg:grid-cols-[1fr_3fr] gap-8 md:gap-16">
-      <div class="lg:col-start-2">
+    <div class="mt-10 md:mt-12 max-w-2xl">
+      {content.summary ? (
         <p class="max-w-2xl body-md text-text leading-relaxed">
-          Building resilient systems and elegant interfaces. Currently crafting digital architectures with precision and intent.
+          {content.summary}
         </p>
+      ) : null}
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        {hasPrimaryCta ? (
+          <ButtonLink href={content.ctaHref} class="gap-2">
+            {content.ctaLabel}
+            <Icon name="arrow-down-right" size={17} />
+          </ButtonLink>
+        ) : null}
+        {resume.href && content.resumeLabel ? <ResumeDownloadLink resume={resume} label={content.resumeLabel} /> : null}
       </div>
     </div>
-  </div>
-</section>
+</Section>

@@ -1,14 +1,10 @@
-import { defaultLocale, getLocalePath } from '@/data/site-content';
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import type { Locale } from '@/data/site-content.schema';
 
-export const getLocalizedPath = (path: string, locale: Locale) => {
-  if (locale === defaultLocale) return path;
-  if (path === '/') return getLocalePath(locale);
-  return `/${locale}${path}`.replace(/\/+/g, '/');
-};
+export { getRelativeLocaleUrl, getAbsoluteLocaleUrl, getPathByLocale } from 'astro:i18n';
 
 export const getHomeAnchor = (id: string, locale: Locale) => {
-  return locale === defaultLocale ? `/#${id}` : `/${locale}/#${id}`;
+  return `${getRelativeLocaleUrl(locale, '/')}#${id}`;
 };
 
 export const getSamePageAnchor = (id: string) => `#${id}`;

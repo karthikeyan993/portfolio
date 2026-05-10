@@ -4,6 +4,7 @@ import ButtonLink from '@/components/ButtonLink.astro';
 import Section from '@/components/Section.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import type { BlogPost } from '@/lib/blog';
+import { getBlogPath } from '@/lib/blog';
 import type { SiteContent } from '@/data/site-content.schema';
 
 interface Props {
@@ -12,17 +13,19 @@ interface Props {
 }
 
 const { posts, content } = Astro.props;
+const blogPath = getBlogPath(content.locale);
 ---
 
-<Section id="writing" tinted>
-  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-    <SectionHeading eyebrow={content.writing.eyebrow} title={content.writing.title} description={content.writing.description} />
-    <ButtonLink href="/blog/" variant="secondary" size="sm" class="mb-10 w-max">{content.writing.readAllLabel}</ButtonLink>
-  </div>
+<Section id="writing" tinted containerClass="max-w-7xl">
+  <SectionHeading eyebrow={content.writing.eyebrow} title={content.writing.title} description={content.writing.description} />
 
   <div class="grid gap-4">
     {posts.map((post) => (
-      <BlogCard post={post} />
+      <BlogCard post={post} locale={content.locale} />
     ))}
+  </div>
+
+  <div class="mt-10">
+    <ButtonLink href={blogPath} variant="secondary" size="sm">{content.writing.readAllLabel}</ButtonLink>
   </div>
 </Section>

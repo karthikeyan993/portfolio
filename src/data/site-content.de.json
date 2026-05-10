@@ -1,13 +1,15 @@
 {
   "locale": "de",
   "seo": {
-    "title": "Karthikeyan | Software Engineer",
-    "description": "Software-Ingenieur für schnelle, zuverlässige Produktoberflächen und pragmatische Websysteme.",
-    "footerNote": "Als statische Astro-Seite mit Performance-Fokus gebaut."
+    "title": "Karthikeyan Vijayan | Software Engineer Portfolio",
+    "description": "Software-Ingenieur für schnelle, wartbare Webprodukte mit React, Astro, TypeScript und pragmatischen Backend-Systemen.",
+    "footerNote": "Als statische Astro-Seite mit Performance-Fokus gebaut.",
+    "siteName": "Karthikeyan Vijayan Portfolio",
+    "author": "Karthikeyan Vijayan",
+    "image": "/og-image.png",
+    "keywords": ["Karthikeyan Vijayan", "Software Engineer", "Frontend Engineer", "React", "Astro", "TypeScript", "Portfolio"]
   },
   "nav": [
-    { "id": "about", "label": "Profil" },
-    { "id": "tech-stack", "label": "Stack" },
     { "id": "experience", "label": "Erfahrung" },
     { "id": "projects", "label": "Projekte" },
     { "id": "contact", "label": "Kontakt" }
@@ -18,8 +20,8 @@
     "initials": "V",
     "titles": ["Software Engineer", "Performance-orientierter Entwickler", "Lernt Deutsch"],
     "summary": "Ich baue zuverlässige Webprodukte mit Fokus auf Klarheit, schnelle Oberflächen und wartbare Systeme. Ich lebe in San Francisco und bin offen für fokussierte Produktentwicklung.",
-    "ctaLabel": "Projekte ansehen",
-    "ctaHref": "#projects",
+    "ctaLabel": "Kontakt aufnehmen",
+    "ctaHref": "#contact",
     "resumeLabel": "Lebenslauf herunterladen",
     "socialLinks": [
       { "platform": "github", "href": "https://github.com", "label": "GitHub" },
@@ -107,6 +109,7 @@
     ]
   },
   "featuredProject": {
+    "enabled": false,
     "eyebrow": "Ausgewählte Arbeit",
     "sectionTitle": "Ausgewähltes Projekt",
     "slug": "clouddash-analytics",
@@ -122,6 +125,7 @@
     "previewLabel": "Projektvorschau"
   },
   "projects": {
+    "enabled": false,
     "eyebrow": "Projekte",
     "title": "Kleinere Builds und Experimente.",
     "items": [
@@ -167,7 +171,7 @@
     "readAllLabel": "Alle Beiträge lesen"
   },
   "resume": {
-    "href": "/resume.pdf",
+    "href": "/resume/karthikeyan-resume.pdf",
     "label": "Lebenslauf herunterladen",
     "headerLabel": "Lebenslauf",
     "note": "PDF, für öffentliches Teilen bereinigt"
@@ -206,14 +210,22 @@
     ]
   },
   "common": {
+    "homeLabel": "Start",
     "blogLabel": "Blog",
     "languageLabel": "Sprache",
     "themeLightLabel": "Hell",
     "themeDarkLabel": "Dunkel",
     "menuOpenLabel": "Menü öffnen",
     "menuCloseLabel": "Menü schließen",
+    "noPostsTitle": "Noch keine Beiträge",
+    "noPostsDescription": "Schau bald wieder vorbei für neue Artikel.",
     "backToBlogLabel": "Zurück zum Blog",
+    "updatedLabel": "Aktualisiert",
     "readPostLabel": "Beitrag lesen",
-    "readTimeSuffix": "Min. Lesezeit"
+    "readTimeSuffix": "Min. Lesezeit",
+    "postContactTitle": "Möchtest du darüber sprechen?",
+    "postContactDescription": "Schreib mir über den Kontaktbereich oder über die Social-Links.",
+    "postContactCtaLabel": "Zum Kontakt",
+    "viewProjectLabel": "Projekt ansehen"
   }
 }

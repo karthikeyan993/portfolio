@@ -1,0 +1,31 @@
+---
+import Icon from '@/components/Icon.astro';
+import type { ResumeContent } from '@/data/site-content.schema';
+import { getResumeDownloadName } from '@/lib/navigation';
+
+interface Props {
+  resume: ResumeContent;
+  class?: string;
+  label?: string;
+  size?: 'md' | 'sm';
+  variant?: 'button' | 'nav' | 'menu';
+}
+
+const { resume, class: className = '', label = resume.label, size = 'md', variant = 'button' } = Astro.props;
+const downloadName = getResumeDownloadName(resume);
+const classes = {
+  button:
+    'button-secondary gap-2',
+  nav:
+    'inline-flex items-center pb-0.5 text-text-muted transition-all duration-300 ease-in-out hover:text-text',
+  menu:
+    'inline-flex items-center rounded-lg px-3 py-1.5 text-text-muted transition-colors hover:bg-border/30',
+};
+const iconSize = size === 'sm' ? 15 : 17;
+const showIcon = variant === 'button';
+---
+
+<a href={resume.href} class:list={[classes[variant], className]} download={downloadName} aria-label={resume.label}>
+  <span>{label}</span>
+  {showIcon ? <Icon name="download" size={iconSize} /> : null}
+</a>

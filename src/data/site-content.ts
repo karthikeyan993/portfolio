@@ -13,6 +13,4 @@ export const localizedContent = {
 export const getSiteContent = (locale: Locale = defaultLocale) => localizedContent[locale];
 export const siteContent = getSiteContent(defaultLocale);
 
-export const getLocalePath = (locale: Locale) => (locale === defaultLocale ? '/' : `/${locale}/`);
-
 export const getAlternateLocale = (locale: Locale): Locale => (locale === 'en' ? 'de' : 'en');

@@ -1,0 +1,43 @@
+---
+import type { Locale, SiteContent } from '@/data/site-content.schema';
+import Hero from '@/components/sections/Hero.astro';
+import About from '@/components/sections/About.astro';
+import Experience from '@/components/sections/Experience.astro';
+import TechStack from '@/components/sections/TechStack.astro';
+import FeaturedProject from '@/components/sections/FeaturedProject.astro';
+import Projects from '@/components/sections/Projects.astro';
+import LatestWriting from '@/components/sections/LatestWriting.astro';
+import NetlifyContactForm from '@/components/NetlifyContactForm.astro';
+import type { BlogPost } from '@/lib/blog';
+import {
+  hasAboutContent,
+  hasContactContent,
+  hasExperienceContent,
+  hasFeaturedProjectContent,
+  hasHeroContent,
+  hasProjectsContent,
+  hasTechStackContent,
+  hasWritingContent,
+} from '@/lib/sections';
+
+interface Props {
+  content: SiteContent;
+  locale: Locale;
+  posts?: BlogPost[];
+}
+
+const { content, posts = [] } = Astro.props;
+const showFeaturedProject = hasFeaturedProjectContent(content.featuredProject);
+const showProjects = hasProjectsContent(content.projects);
+---
+
+{hasHeroContent(content.hero) ? <Hero content={content.hero} resume={content.resume} /> : null}
+{hasAboutContent(content.about) ? <About content={content.about} /> : null}
+{hasExperienceContent(content.experience) ? <Experience content={content.experience} /> : null}
+{hasTechStackContent(content.techStack) ? <TechStack content={content.techStack} /> : null}
+{/* Toggle project sections with `enabled` in `src/data/site-content.*.json` when projects are ready. */}
+{showFeaturedProject ? <FeaturedProject content={content.featuredProject} /> : null}
+{showProjects ? <Projects content={content.projects} ctaLabel={content.common.viewProjectLabel} /> : null}
+{hasWritingContent(content.writing, posts.length) ? <LatestWriting content={content} posts={posts} /> : null}
+{hasContactContent(content.contact) ? <NetlifyContactForm content={content} /> : null}
+<slot />

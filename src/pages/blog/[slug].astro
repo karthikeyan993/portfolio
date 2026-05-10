@@ -1,14 +1,18 @@
 ---
+import type { InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Icon from '@/components/Icon.astro';
 import Prose from '@/components/Prose.astro';
 import { getSiteContent } from '@/data/site-content';
+import type { Locale } from '@/data/site-content.schema';
+import { filterPublishedPosts, filterPostsByLocale, formatPostDate, getBlogPath, getLanguageLabel, getReadingTime, sortPostsByPublishedDate, getPostPath } from '@/lib/blog';
 import type { BlogPost } from '@/lib/blog';
-import { formatPostDate, getLanguageLabel, getReadingTime, isPublishedPost, sortPostsByPublishedDate } from '@/lib/blog';
+import { getHomeAnchor } from '@/lib/i18n';
 
 export async function getStaticPaths() {
-  const posts = sortPostsByPublishedDate((await getCollection('blog')).filter(isPublishedPost));
+  const posts = sortPostsByPublishedDate(filterPostsByLocale(filterPublishedPosts(await getCollection('blog')), 'en'));
 
   return posts.map((post) => ({
     params: { slug: post.id },
@@ -16,22 +20,45 @@ export async function getStaticPaths() {
   }));
 }
 
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
 const content = getSiteContent('en');
-const { post } = Astro.props as { post: BlogPost };
+const { post } = Astro.props;
 const { Content } = await render(post);
 const title = `${post.data.title} | ${content.hero.name}`;
+const blogPath = getBlogPath('en');
+const contactPath = getHomeAnchor('contact', 'en');
+
+const allPosts = await getCollection('blog');
+const alternatePaths: Partial<Record<Locale, string>> = { [post.data.language]: getPostPath(post, post.data.language as Locale) };
+
+if (post.data.translationKey) {
+  const translations = allPosts.filter((p: BlogPost) => p.data.translationKey === post.data.translationKey && p.id !== post.id);
+  translations.forEach((t: BlogPost) => {
+    alternatePaths[t.data.language as Locale] = getPostPath(t, t.data.language as Locale);
+  });
+}
 ---
 
-<BaseLayout title={title} description={post.data.description} currentPath={Astro.url.pathname} ogType="article" locale="en" content={content}>
+<BaseLayout
+  title={title}
+  description={post.data.description}
+  image={post.data.cover?.src}
+  ogType="article"
+  publishedTime={post.data.publishedAt}
+  updatedTime={post.data.updatedAt}
+  tags={post.data.tags}
+  alternatePaths={alternatePaths}
+>
   <article class="px-4 py-20 md:py-28">
     <div class="mx-auto max-w-3xl">
-      <a href="/blog/" class="button-ghost mb-8 gap-2 px-0">
+      <a href={blogPath} class="button-ghost mb-8 gap-2 px-0">
         <Icon name="arrow-left" size={16} /> {content.common.backToBlogLabel}
       </a>
 
       <header>
         <div class="flex flex-wrap items-center gap-2 text-sm text-text-muted">
-          <time datetime={post.data.publishedAt.toISOString()}>{formatPostDate(post.data.publishedAt)}</time>
+          <time datetime={post.data.publishedAt.toISOString()}>{formatPostDate(post.data.publishedAt, 'en')}</time>
           <span aria-hidden="true">/</span>
           <span>{getReadingTime(post.body ?? '', content.common.readTimeSuffix)}</span>
           <span aria-hidden="true">/</span>
@@ -39,7 +66,7 @@ const title = `${post.data.title} | ${content.hero.name}`;
           {post.data.updatedAt ? (
             <>
               <span aria-hidden="true">/</span>
-              <span>Updated {formatPostDate(post.data.updatedAt)}</span>
+              <span>{content.common.updatedLabel} {formatPostDate(post.data.updatedAt, 'en')}</span>
             </>
           ) : null}
         </div>
@@ -55,7 +82,7 @@ const title = `${post.data.title} | ${content.hero.name}`;
       </header>
 
       {post.data.cover ? (
-        <img src={post.data.cover} alt="" class="mt-10 w-full" />
+        <Image src={post.data.cover} alt={post.data.title} class="mt-10 w-full" />
       ) : null}
 
       <div class="mt-16">
@@ -65,11 +92,11 @@ const title = `${post.data.title} | ${content.hero.name}`;
       </div>
 
       <div class="mt-24 border-t border-border pt-8">
-        <p class="headline-md text-brand-primary">Want to talk about this?</p>
+        <p class="headline-md text-brand-primary">{content.common.postContactTitle}</p>
         <p class="mt-2 body-md text-text-muted">
-          Send a note from the contact section or connect through the social links below.
+          {content.common.postContactDescription}
         </p>
-        <a href="/#contact" class="mt-4 inline-flex label-caps text-brand-primary hover:text-text">Go to contact</a>
+        <a href={contactPath} class="mt-4 inline-flex label-caps text-brand-primary hover:text-text">{content.common.postContactCtaLabel}</a>
       </div>
     </div>
   </article>

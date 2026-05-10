@@ -30,6 +30,8 @@
     --selection-bg: #c2e8dd;
     --selection-text: #476961;
     --focus-ring: #46645c;
+    --danger: #9d6a77;
+    --danger-soft: #f7f0f3;
   }
 
   .dark {
@@ -44,6 +46,8 @@
     --selection-bg: #d8a0ab;
     --selection-text: #11131a;
     --focus-ring: #b87a86;
+    --danger: #d39aaa;
+    --danger-soft: #2b2330;
   }
 
   html {
@@ -130,6 +134,56 @@
 
   .social-link {
     @apply inline-flex h-12 w-12 items-center justify-center border border-border bg-transparent text-text-muted transition-colors duration-150 hover:border-brand-primary hover:text-brand-primary;
+  }
+
+  .contact-field {
+    @apply relative;
+  }
+
+  .contact-input[data-invalid='true'] {
+    border-color: var(--border);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--danger-soft) 88%, var(--surface) 12%), var(--danger-soft));
+  }
+
+  .contact-input[data-invalid='true']:focus-visible {
+    outline: none !important;
+    border-color: var(--border) !important;
+  }
+
+  .contact-input[data-invalid='true']:focus {
+    border-color: var(--border) !important;
+  }
+
+  .contact-error-float {
+    @apply absolute right-2 bottom-[calc(100%+0.45rem)] z-10 max-w-[18rem] rounded-md px-2.5 py-1.5 text-xs font-semibold leading-[1.35] shadow-lg;
+    border: 1px solid color-mix(in srgb, var(--danger) 52%, var(--brand-accent) 22%, var(--border) 26%);
+    color: color-mix(in srgb, var(--danger) 90%, var(--text) 10%);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--surface) 84%, var(--danger-soft) 16%), var(--danger-soft));
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
+  }
+
+  .contact-error-float::before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    right: 1rem;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    background: inherit;
+    border-right: 1px solid color-mix(in srgb, var(--danger) 52%, var(--brand-accent) 22%, var(--border) 26%);
+    border-bottom: 1px solid color-mix(in srgb, var(--danger) 52%, var(--brand-accent) 22%, var(--border) 26%);
+  }
+
+  .contact-error-float[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

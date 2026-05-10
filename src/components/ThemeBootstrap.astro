@@ -1,0 +1,12 @@
+---
+import { STORAGE_KEYS } from '@/lib/constants';
+---
+<!-- no-FOUC theme bootstrap must run before paint and cannot be a deferred bundle -->
+<script is:inline define:vars={{ themeKey: STORAGE_KEYS.theme }}>
+  (() => {
+    const stored = localStorage.getItem(themeKey);
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  })();
+</script>

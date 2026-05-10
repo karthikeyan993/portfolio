@@ -5,32 +5,50 @@ import type { ProjectsContent } from '@/data/site-content.schema';
 
 interface Props {
   content: ProjectsContent;
+  ctaLabel: string;
 }
 
-const { content } = Astro.props;
+const { content, ctaLabel } = Astro.props;
+const projects = content.items.filter((project) => project.title.trim() || project.summary.trim());
 ---
 
 <Section id="projects">
   <SectionHeading eyebrow={content.eyebrow} title={content.title} />
 
   <div>
-    {content.items.map((project) => (
+    {projects.map((project) => (
       <article class="group border-b border-border transition-colors hover:bg-elevated/30">
-        <a href={project.links.live || project.links.source || '#'} class="flex flex-col gap-4 py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
-          <div class="flex-1">
-            <h3 class="headline-md text-brand-primary transition-all group-hover:translate-x-2">
-              {project.title}
-            </h3>
-            <p class="mt-4 max-w-2xl body-md text-text-muted">{project.summary}</p>
-            <div class="mt-6 flex flex-wrap gap-2">
-              {project.tags.map((tech) => <span class="tag">{tech}</span>)}
+        {project.links.live || project.links.source ? (
+          <a href={project.links.live ?? project.links.source!} class="flex flex-col gap-4 py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
+            <div class="flex-1">
+              <h3 class="headline-md text-brand-primary transition-all group-hover:translate-x-2">
+                {project.title}
+              </h3>
+              <p class="mt-4 max-w-2xl body-md text-text-muted">{project.summary}</p>
+              {project.tags.length > 0 ? (
+                <div class="mt-6 flex flex-wrap gap-2">
+                  {project.tags.filter((tag) => tag.trim()).map((tech) => <span class="tag">{tech}</span>)}
+                </div>
+              ) : null}
+            </div>
+            
+            <div class="flex gap-4 md:text-right">
+              <span class="label-caps text-text-muted group-hover:text-brand-primary">{ctaLabel}</span>
+            </div>
+          </a>
+        ) : (
+          <div class="flex flex-col gap-4 py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
+            <div class="flex-1">
+              <h3 class="headline-md text-brand-primary">{project.title}</h3>
+              <p class="mt-4 max-w-2xl body-md text-text-muted">{project.summary}</p>
+              {project.tags.length > 0 ? (
+                <div class="mt-6 flex flex-wrap gap-2">
+                  {project.tags.filter((tag) => tag.trim()).map((tech) => <span class="tag">{tech}</span>)}
+                </div>
+              ) : null}
             </div>
           </div>
-          
-          <div class="flex gap-4 md:text-right">
-            <span class="label-caps text-text-muted group-hover:text-brand-primary">View Project</span>
-          </div>
-        </a>
+        )}
       </article>
     ))}
   </div>

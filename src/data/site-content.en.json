@@ -1,13 +1,15 @@
 {
   "locale": "en",
   "seo": {
-    "title": "Karthikeyan | Software Engineer",
-    "description": "Software engineer building fast, reliable product interfaces and practical web systems.",
-    "footerNote": "Built as a static Astro site with performance-first defaults."
+    "title": "Karthikeyan Vijayan | Software Engineer Portfolio",
+    "description": "Software engineer building fast, maintainable web products with React, Astro, TypeScript, and practical backend systems.",
+    "footerNote": "Built as a static Astro site with performance-first defaults.",
+    "siteName": "Karthikeyan Vijayan Portfolio",
+    "author": "Karthikeyan Vijayan",
+    "image": "/og-image.png",
+    "keywords": ["Karthikeyan Vijayan", "software engineer", "frontend engineer", "React", "Astro", "TypeScript", "portfolio"]
   },
   "nav": [
-    { "id": "about", "label": "About" },
-    { "id": "tech-stack", "label": "Stack" },
     { "id": "experience", "label": "Experience" },
     { "id": "projects", "label": "Projects" },
     { "id": "contact", "label": "Contact" }
@@ -18,8 +20,8 @@
     "initials": "Vijayan",
     "titles": ["Software Engineer", "Performance-minded Builder", "Learning German"],
     "summary": "I build dependable web products with a bias for clarity, fast interfaces, and maintainable systems. Based in San Francisco and open to focused product engineering work.",
-    "ctaLabel": "View Projects",
-    "ctaHref": "#projects",
+    "ctaLabel": "Get in Touch",
+    "ctaHref": "#contact",
     "resumeLabel": "Download Resume",
     "socialLinks": [
       { "platform": "github", "href": "https://github.com", "label": "GitHub" },
@@ -107,6 +109,7 @@
     ]
   },
   "featuredProject": {
+    "enabled": false,
     "eyebrow": "Selected work",
     "sectionTitle": "Featured Project",
     "slug": "clouddash-analytics",
@@ -122,6 +125,7 @@
     "previewLabel": "Project Preview"
   },
   "projects": {
+    "enabled": false,
     "eyebrow": "Projects",
     "title": "Smaller builds and experiments.",
     "items": [
@@ -167,7 +171,7 @@
     "readAllLabel": "Read all writing"
   },
   "resume": {
-    "href": "/resume.pdf",
+    "href": "/resume/karthikeyan-resume.pdf",
     "label": "Download Resume",
     "headerLabel": "Resume",
     "note": "PDF, sanitized for public sharing"
@@ -206,14 +210,22 @@
     ]
   },
   "common": {
+    "homeLabel": "Home",
     "blogLabel": "Blog",
     "languageLabel": "Language",
     "themeLightLabel": "Light",
     "themeDarkLabel": "Dark",
     "menuOpenLabel": "Open menu",
     "menuCloseLabel": "Close menu",
+    "noPostsTitle": "No posts yet",
+    "noPostsDescription": "Check back soon for new writing.",
     "backToBlogLabel": "Back to blog",
+    "updatedLabel": "Updated",
     "readPostLabel": "Read post",
-    "readTimeSuffix": "min read"
+    "readTimeSuffix": "min read",
+    "postContactTitle": "Want to talk about this?",
+    "postContactDescription": "Send a note from the contact section or connect through the social links below.",
+    "postContactCtaLabel": "Go to contact",
+    "viewProjectLabel": "View Project"
   }
 }

@@ -1,0 +1,31 @@
+---
+import type { Locale, SiteContent } from '@/data/site-content.schema';
+import { getBlogPath } from '@/lib/blog';
+
+interface Props {
+  content: SiteContent;
+  locale?: Locale;
+}
+
+const { content, locale = 'en' } = Astro.props;
+const blogPath = getBlogPath(locale);
+---
+<footer class="mt-32 border-t border-border py-12">
+  <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 md:flex-row md:items-center md:justify-between md:px-8">
+    <div>
+      <p class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text">
+        © {new Date().getFullYear()} {content.seo.footerNote}
+      </p>
+    </div>
+    <div class="flex gap-6 flex-wrap">
+      {content.contact.links.filter((link) => link.href && link.label).map((link) => (
+        <a href={link.href} class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">
+          {link.label}
+        </a>
+      ))}
+      <a href={blogPath} class="font-sans text-xs font-semibold uppercase tracking-[0.1em] text-text-muted transition-colors hover:text-text">
+        {content.common.blogLabel}
+      </a>
+    </div>
+  </div>
+</footer>

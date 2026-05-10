@@ -1,0 +1,33 @@
+---
+import Icon from '@/components/Icon.astro';
+---
+<button
+  id="scroll-to-top"
+  class="fixed bottom-6 right-6 md:bottom-10 md:right-10 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-bg border border-border/60 shadow-md transition-all duration-500 translate-y-20 opacity-0 hover:border-brand-primary text-brand-primary cursor-pointer pointer-events-auto focus:outline-none"
+  aria-label="Scroll to top"
+>
+  <Icon name="arrow-left" class="rotate-90" size={20} />
+</button>
+
+<script>
+  function setupScrollToTop() {
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    if (!scrollToTopBtn || scrollToTopBtn.dataset.bound === 'true') return;
+    scrollToTopBtn.dataset.bound = 'true';
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        scrollToTopBtn.classList.remove('translate-y-20', 'opacity-0');
+      } else {
+        scrollToTopBtn.classList.add('translate-y-20', 'opacity-0');
+      }
+    }, { passive: true });
+
+    scrollToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  setupScrollToTop();
+  document.addEventListener('astro:after-swap', setupScrollToTop);
+</script>

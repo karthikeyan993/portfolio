@@ -1,19 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import HomePage from '@/components/HomePage.astro';
+import HomeLayout from '@/layouts/HomeLayout.astro';
 import { getSiteContent } from '@/data/site-content';
-import { hasPublicResume } from '@/lib/resume';
+import { getCollection } from 'astro:content';
+import { getLatestPosts, filterPostsByLocale } from '@/lib/blog';
 
 const content = getSiteContent('de');
-const resumeAvailable = hasPublicResume();
+const latestPosts = getLatestPosts(filterPostsByLocale(await getCollection('blog'), 'de'), 2);
 ---
 
-<BaseLayout
-  title={content.seo.title}
-  description={content.seo.description}
-  currentPath={Astro.url.pathname}
-  locale="de"
-  content={content}
->
-  <HomePage content={content} resumeAvailable={resumeAvailable} />
+<BaseLayout locale="de">
+  <HomeLayout content={content} locale="de" posts={latestPosts} />
 </BaseLayout>

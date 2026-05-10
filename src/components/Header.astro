@@ -1,38 +1,58 @@
 ---
-import { getAlternateLocale, getLocalePath } from '@/data/site-content';
+import { getAlternateLocale } from '@/data/site-content';
 import type { Locale, SiteContent } from '@/data/site-content.schema';
 import Icon from '@/components/Icon.astro';
+import ResumeDownloadLink from '@/components/ResumeDownloadLink.astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getBlogPath } from '@/lib/blog';
+import { getHeaderHomeLink, getHeaderNavLinks } from '@/lib/navigation';
+import { getVisibleHomeSectionIds } from '@/lib/sections';
 
 interface Props {
   content: SiteContent;
   locale: Locale;
   currentPath: string;
-  resumeAvailable?: boolean;
 }
 
-const { locale, currentPath } = Astro.props;
-const isHome = currentPath === '/' || currentPath === '/de/';
+const { content, locale, currentPath } = Astro.props;
+const homePath = getRelativeLocaleUrl(locale, '/');
+const isHome = currentPath === homePath;
 const alternateLocale = getAlternateLocale(locale);
-const alternateUrl = getLocalePath(alternateLocale);
+const alternateUrl = getRelativeLocaleUrl(alternateLocale, '/');
+const homeLink = getHeaderHomeLink(content.common.homeLabel, locale, isHome);
+const blogPath = getBlogPath(locale);
+const isBlog = currentPath.startsWith(blogPath);
+const visibleSectionIds = getVisibleHomeSectionIds(content);
+const navLinks = getHeaderNavLinks(
+  content.nav.filter((item) => visibleSectionIds.has(item.id)),
+  locale,
+  isHome
+);
 ---
 
 <header class="fixed top-6 left-0 right-0 z-50 pointer-events-none transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 md:px-8 flex justify-end relative">
     <div class="flex flex-col items-end gap-3">
-      <nav class="pointer-events-auto flex items-center bg-bg/90 backdrop-blur-md border border-border/40 rounded-full px-3.5 md:px-8 py-2.5 md:py-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all">
-        
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center gap-8">
-          <div class="flex gap-6 items-center font-heading text-lg tracking-tight">
-            <a href="/" class={`pb-0.5 transition-all duration-300 ease-in-out ${isHome ? 'text-text border-b border-text opacity-70' : 'text-text-muted hover:text-text'}`}>
-              Home
+      <nav class="pointer-events-auto flex items-center bg-bg/90 backdrop-blur-md border border-border/40 rounded-full px-4 md:px-5 py-2.5 md:py-3 shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all">
+        <div class="hidden md:flex items-center gap-5">
+          <div class="flex items-center gap-5 font-heading text-base tracking-tight">
+            {homeLink ? (
+              <a href={homeLink.href} class="pb-0.5 transition-all duration-300 ease-in-out text-text-muted hover:text-text">
+                {homeLink.label}
+              </a>
+            ) : null}
+            {navLinks.map((item) => (
+              <a href={item.href} class="pb-0.5 transition-all duration-300 ease-in-out text-text-muted hover:text-text">
+                {item.label}
+              </a>
+            ))}
+            <a href={blogPath} class={`pb-0.5 transition-all duration-300 ease-in-out ${isBlog ? 'text-text border-b border-text opacity-70' : 'text-text-muted hover:text-text'}`}>
+              {content.common.blogLabel}
             </a>
-            <a href="/blog/" class={`pb-0.5 transition-all duration-300 ease-in-out ${!isHome ? 'text-text border-b border-text opacity-70' : 'text-text-muted hover:text-text'}`}>
-              Blog
-            </a>
+            <ResumeDownloadLink resume={content.resume} label={content.resume.headerLabel} variant="nav" size="sm" />
           </div>
 
-          <div class="flex items-center gap-5 border-l border-border pl-5">
+          <div class="flex items-center gap-4 border-l border-border pl-4">
             <a
               href={alternateUrl}
               class="label-caps text-text-muted hover:text-text transition-colors"
@@ -41,11 +61,11 @@ const alternateUrl = getLocalePath(alternateLocale);
             >
               {alternateLocale.toUpperCase()}
             </a>
-            <button 
-              type="button" 
-              class="text-text-muted hover:text-brand-primary transition-all duration-300 flex items-center justify-center" 
+            <button
+              type="button"
+              class="text-text-muted hover:text-brand-primary transition-all duration-300 flex items-center justify-center"
               data-theme-toggle
-              aria-label="Toggle theme"
+              aria-label={content.common.themeDarkLabel}
             >
               <span data-theme-icon="light"><Icon name="moon" size={20} /></span>
               <span data-theme-icon="dark" hidden><Icon name="sun" size={20} /></span>
@@ -53,24 +73,25 @@ const alternateUrl = getLocalePath(alternateLocale);
           </div>
         </div>
 
-        <!-- Mobile Trigger & High-Freq Controls -->
         <div class="flex md:hidden items-center">
-          <button 
-            type="button" 
-            class="text-text-muted hover:text-brand-primary transition-all duration-300 flex items-center justify-center overflow-hidden mr-4" 
+          <button
+            type="button"
+            class="text-text-muted hover:text-brand-primary transition-all duration-300 flex items-center justify-center overflow-hidden mr-4"
             data-theme-toggle
             data-header-theme-toggle
-            aria-label="Toggle theme"
+            aria-label={content.common.themeDarkLabel}
           >
             <span data-theme-icon="light"><Icon name="moon" size={20} /></span>
             <span data-theme-icon="dark" hidden><Icon name="sun" size={20} /></span>
           </button>
-          
-          <button 
-            id="mobile-menu-trigger" 
-            type="button" 
+
+          <button
+            id="mobile-menu-trigger"
+            type="button"
             class="text-text-muted hover:text-text transition-colors flex items-center justify-center"
-            aria-label="Open menu"
+            data-label-open={content.common.menuOpenLabel}
+            data-label-close={content.common.menuCloseLabel}
+            aria-label={content.common.menuOpenLabel}
             aria-expanded="false"
             aria-controls="mobile-menu"
           >
@@ -80,21 +101,28 @@ const alternateUrl = getLocalePath(alternateLocale);
         </div>
       </nav>
 
-      <!-- Mobile Dropdown Panel -->
-      <div 
-        id="mobile-menu" 
-        class="hidden md:hidden pointer-events-auto bg-bg/95 backdrop-blur-lg border border-border/40 rounded-2xl p-4 shadow-2xl min-w-[160px] origin-top-right transition-all duration-200"
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden pointer-events-auto bg-bg/95 backdrop-blur-lg border border-border/40 rounded-2xl p-4 shadow-2xl min-w-[200px] origin-top-right transition-all duration-200"
       >
-        <div class="flex flex-col gap-3 font-heading text-lg tracking-tight">
-          <a href="/" class={`px-3 py-1.5 rounded-lg transition-colors ${isHome ? 'bg-brand-primary/10 text-brand-primary' : 'text-text-muted hover:bg-border/30'}`}>
-            Home
+        <div class="flex flex-col gap-2 font-heading text-lg tracking-tight">
+          {homeLink ? (
+            <a href={homeLink.href} class="px-3 py-1.5 rounded-lg transition-colors text-text-muted hover:bg-border/30">
+              {homeLink.label}
+            </a>
+          ) : null}
+          {navLinks.map((item) => (
+            <a href={item.href} class="px-3 py-1.5 rounded-lg transition-colors text-text-muted hover:bg-border/30">
+              {item.label}
+            </a>
+          ))}
+          <a href={blogPath} class={`px-3 py-1.5 rounded-lg transition-colors ${isBlog ? 'bg-brand-primary/10 text-brand-primary' : 'text-text-muted hover:bg-border/30'}`}>
+            {content.common.blogLabel}
           </a>
-          <a href="/blog/" class={`px-3 py-1.5 rounded-lg transition-colors ${!isHome ? 'bg-brand-primary/10 text-brand-primary' : 'text-text-muted hover:bg-border/30'}`}>
-            Blog
-          </a>
+          <ResumeDownloadLink resume={content.resume} label={content.resume.headerLabel} variant="menu" size="sm" />
           <div class="flex items-center justify-between px-3 mt-1">
-            <a 
-              href={alternateUrl} 
+            <a
+              href={alternateUrl}
               class="flex items-center gap-2 text-text-muted hover:text-text transition-colors label-caps text-sm py-1.5"
               data-locale-link
               data-locale={alternateLocale}
@@ -102,12 +130,12 @@ const alternateUrl = getLocalePath(alternateLocale);
               <span class="font-medium tracking-wide">{alternateLocale.toUpperCase()}</span>
             </a>
 
-            <button 
-              type="button" 
-              class="hidden text-text-muted hover:text-brand-primary transition-colors items-center justify-center p-1.5" 
+            <button
+              type="button"
+              class="hidden text-text-muted hover:text-brand-primary transition-colors items-center justify-center p-1.5"
               data-theme-toggle
               data-menu-theme-toggle
-              aria-label="Toggle theme"
+              aria-label={content.common.themeDarkLabel}
             >
               <span data-theme-icon="light"><Icon name="moon" size={18} /></span>
               <span data-theme-icon="dark" hidden><Icon name="sun" size={18} /></span>
@@ -120,6 +148,8 @@ const alternateUrl = getLocalePath(alternateLocale);
 </header>
 
 <script>
+  import { STORAGE_KEYS } from '@/lib/constants';
+
   function setupHeader() {
     const trigger = document.getElementById('mobile-menu-trigger');
     const menu = document.getElementById('mobile-menu');
@@ -128,43 +158,44 @@ const alternateUrl = getLocalePath(alternateLocale);
     const headerThemeToggle = document.querySelector('[data-header-theme-toggle]');
     const menuThemeToggle = document.querySelector('[data-menu-theme-toggle]');
 
-    if (!trigger || !menu) return;
+    if (!trigger || !menu || trigger.dataset.bound === 'true') return;
+    const triggerEl = trigger;
+    const menuEl = menu;
+    triggerEl.dataset.bound = 'true';
+    const openLabel = triggerEl.getAttribute('data-label-open') || 'Open menu';
+    const closeLabel = triggerEl.getAttribute('data-label-close') || 'Close menu';
 
     function toggleMenu(force?: boolean) {
-      const isExpanded = force !== undefined ? !force : trigger?.getAttribute('aria-expanded') === 'true';
+      const isExpanded = force !== undefined ? !force : triggerEl.getAttribute('aria-expanded') === 'true';
       const nextState = !isExpanded;
-      
-      trigger?.setAttribute('aria-expanded', String(nextState));
-      menu?.classList.toggle('hidden', !nextState);
+
+      triggerEl.setAttribute('aria-expanded', String(nextState));
+      triggerEl.setAttribute('aria-label', nextState ? closeLabel : openLabel);
+      menuEl.classList.toggle('hidden', !nextState);
       menuIcon?.classList.toggle('hidden', nextState);
       closeIcon?.classList.toggle('hidden', !nextState);
-
-      if (nextState) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = '';
-      }
+      document.body.style.overflow = nextState ? 'hidden' : '';
     }
 
-    trigger.addEventListener('click', (e) => {
+    triggerEl.addEventListener('click', (e) => {
       e.stopPropagation();
       toggleMenu();
     });
 
     document.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      if (!menu.classList.contains('hidden') && !menu.contains(target) && !trigger.contains(target)) {
+      if (!menuEl.classList.contains('hidden') && !menuEl.contains(target) && !triggerEl.contains(target)) {
         toggleMenu(false);
       }
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+      if (e.key === 'Escape' && !menuEl.classList.contains('hidden')) {
         toggleMenu(false);
       }
     });
 
-    menu.querySelectorAll('a').forEach(link => {
+    menuEl.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         toggleMenu(false);
       });
@@ -172,35 +203,64 @@ const alternateUrl = getLocalePath(alternateLocale);
 
     const mql = window.matchMedia('(min-width: 768px)');
     mql.addEventListener('change', (e) => {
-      if (e.matches && !menu.classList.contains('hidden')) {
+      if (e.matches && !menuEl.classList.contains('hidden')) {
         toggleMenu(false);
       }
     });
 
-    // Handle scroll-based visibility for theme toggle
     const handleScroll = () => {
       const isScrolled = window.scrollY > 50;
       const isMobile = window.innerWidth < 768;
 
-      if (headerThemeToggle) {
-        if (isScrolled && isMobile) {
-          headerThemeToggle.classList.add('opacity-0', 'pointer-events-none', 'scale-90', 'w-0', 'mr-0');
-          headerThemeToggle.classList.remove('opacity-100', 'scale-100', 'w-auto', 'mr-4');
-          menuThemeToggle?.classList.remove('hidden');
-          menuThemeToggle?.classList.add('flex');
-        } else {
-          headerThemeToggle.classList.remove('opacity-0', 'pointer-events-none', 'scale-90', 'w-0', 'mr-0');
-          headerThemeToggle.classList.add('opacity-100', 'scale-100', 'w-auto');
-          if (isMobile) headerThemeToggle.classList.add('mr-4');
-          menuThemeToggle?.classList.add('hidden');
-          menuThemeToggle?.classList.remove('flex');
-        }
+      if (!headerThemeToggle) return;
+      if (isScrolled && isMobile) {
+        headerThemeToggle.classList.add('opacity-0', 'pointer-events-none', 'scale-90', 'w-0', 'mr-0');
+        headerThemeToggle.classList.remove('opacity-100', 'scale-100', 'w-auto', 'mr-4');
+        menuThemeToggle?.classList.remove('hidden');
+        menuThemeToggle?.classList.add('flex');
+        return;
       }
+
+      headerThemeToggle.classList.remove('opacity-0', 'pointer-events-none', 'scale-90', 'w-0', 'mr-0');
+      headerThemeToggle.classList.add('opacity-100', 'scale-100', 'w-auto');
+      if (isMobile) headerThemeToggle.classList.add('mr-4');
+      menuThemeToggle?.classList.add('hidden');
+      menuThemeToggle?.classList.remove('flex');
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    handleScroll();
+
+    const localeLinks = document.querySelectorAll('[data-locale-link]');
+    localeLinks.forEach((link) => {
+      const el = link as HTMLElement;
+      if (el.dataset.bound === 'true') return;
+      el.dataset.bound = 'true';
+      el.addEventListener('click', () => {
+        localStorage.setItem(STORAGE_KEYS.locale, el.dataset.locale || 'en');
+      });
+    });
+
+    const applyThemeIcon = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.querySelectorAll('[data-theme-icon="dark"]').forEach((icon) => icon.toggleAttribute('hidden', isDark));
+      document.querySelectorAll('[data-theme-icon="light"]').forEach((icon) => icon.toggleAttribute('hidden', !isDark));
+    };
+
+    document.querySelectorAll('[data-theme-toggle]').forEach((toggle) => {
+      const el = toggle as HTMLElement;
+      if (el.dataset.bound === 'true') return;
+      el.dataset.bound = 'true';
+      el.addEventListener('click', () => {
+        const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+        document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+        localStorage.setItem(STORAGE_KEYS.theme, nextTheme);
+        applyThemeIcon();
+      });
+    });
+
+    applyThemeIcon();
   }
 
   setupHeader();
