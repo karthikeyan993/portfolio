@@ -1,17 +1,12 @@
+/* Newsreader — heading font (300=light, 300i=hero italic, 400=normal, 500=medium) */
 @import '@fontsource/newsreader/latin-300.css';
-@import '@fontsource/newsreader/latin-ext-300.css';
 @import '@fontsource/newsreader/latin-300-italic.css';
-@import '@fontsource/newsreader/latin-ext-300-italic.css';
 @import '@fontsource/newsreader/latin-400.css';
-@import '@fontsource/newsreader/latin-ext-400.css';
-@import '@fontsource/newsreader/latin-400-italic.css';
-@import '@fontsource/newsreader/latin-ext-400-italic.css';
 @import '@fontsource/newsreader/latin-500.css';
-@import '@fontsource/newsreader/latin-ext-500.css';
+
+/* Inter — body font (400=normal, 600=semibold) */
 @import '@fontsource/inter/latin-400.css';
-@import '@fontsource/inter/latin-ext-400.css';
 @import '@fontsource/inter/latin-600.css';
-@import '@fontsource/inter/latin-ext-600.css';
 
 @tailwind base;
 @tailwind components;
