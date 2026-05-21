@@ -10,6 +10,7 @@
     "typecheck": "astro check",
     "lint": "eslint .",
     "test": "vitest run",
+    "new-post": "node scripts/new-post.js",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
