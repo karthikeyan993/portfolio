@@ -8,9 +8,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-const readJson = (relativePath) => JSON.parse(fs.readFileSync(path.join(rootDir, relativePath), 'utf8'));
-
 const locales = ['en', 'de'];
+const contentFiles = {
+  en: path.join(rootDir, 'src/data/site-content.en.json'),
+  de: path.join(rootDir, 'src/data/site-content.de.json'),
+};
 const errors = [];
 const warnings = [];
 const homeSectionIds = new Set(['about', 'tech-stack', 'experience', 'projects', 'contact']);
@@ -31,7 +33,7 @@ const walkValues = (value, visitor) => {
 };
 
 for (const locale of locales) {
-  const content = readJson(`src/data/site-content.${locale}.json`);
+  const content = JSON.parse(fs.readFileSync(contentFiles[locale], 'utf8'));
 
   for (const item of content.nav) {
     if (!homeSectionIds.has(item.id)) {
@@ -39,8 +41,9 @@ for (const locale of locales) {
     }
   }
 
-  const resumePath = path.join(rootDir, 'public', content.resume.href.replace(/^\//, ''));
-  if (!fs.existsSync(resumePath)) {
+  if (!/^\/resume\/[\w.-]+\.pdf$/.test(content.resume.href)) {
+    errors.push(`${locale}: resume href must point to a PDF under /resume/.`);
+  } else if (!fs.existsSync(`${rootDir}/public${content.resume.href}`)) {
     errors.push(`${locale}: resume file is missing at ${content.resume.href}.`);
   }
 
@@ -58,8 +61,8 @@ if (warnings.length > 0) {
 const blogDir = path.join(rootDir, 'src/data/blog');
 const translationKeys = new Map();
 
-for (const filename of fs.readdirSync(blogDir).filter((file) => /\.mdx?$/.test(file))) {
-  const source = fs.readFileSync(path.join(blogDir, filename), 'utf8');
+for (const filename of fs.readdirSync(blogDir).filter((file) => /^[\w.-]+\.mdx?$/.test(file))) {
+  const source = fs.readFileSync(`${blogDir}/${filename}`, 'utf8');
   const frontmatter = source.match(/^---\n([\s\S]*?)\n---/);
   if (!frontmatter) continue;
 
