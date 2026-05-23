@@ -46,6 +46,30 @@
   src: url('@fontsource/inter/files/inter-latin-600-normal.woff2') format('woff2');
 }
 
+/*
+ * Metric-adjusted fallback faces (Fontaine pattern).
+ * These local system fonts are scaled so their box matches Newsreader/Inter,
+ * eliminating layout shift when the real webfont swaps in.
+ * Values derived via Capsize against Times New Roman / Arial.
+ */
+@font-face {
+  font-family: 'Newsreader Fallback';
+  src: local('Times New Roman');
+  size-adjust: 105.34%;
+  ascent-override: 89.04%;
+  descent-override: 24.55%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial');
+  size-adjust: 107.40%;
+  ascent-override: 90.20%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

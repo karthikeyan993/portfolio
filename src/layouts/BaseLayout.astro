@@ -12,6 +12,7 @@ import '@/index.css';
 
 import interLatin400 from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
 import newsreaderLatin300 from '@fontsource/newsreader/files/newsreader-latin-300-normal.woff2?url';
+import newsreaderLatin300Italic from '@fontsource/newsreader/files/newsreader-latin-300-italic.woff2?url';
 
 interface Props {
   title?: string;
@@ -45,6 +46,7 @@ const pageSeo = buildPageSeo({ baseUrl: Astro.site ?? Astro.url.origin, content,
   <head>
     <link rel="preload" href={interLatin400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={newsreaderLatin300} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={newsreaderLatin300Italic} as="font" type="font/woff2" crossorigin />
     <SeoHead content={content} title={title} description={description} ogType={ogType} pageSeo={pageSeo} publishedTime={publishedTime} updatedTime={updatedTime} tags={tags} />
     <ThemeBootstrap />
     {enableLocaleRedirect ? <LocaleRedirect /> : null}

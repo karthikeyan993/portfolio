@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['"Newsreader"', 'serif'],
-        body: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        heading: ['"Newsreader"', '"Newsreader Fallback"', 'serif'],
+        body: ['"Inter"', '"Inter Fallback"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       colors: {
