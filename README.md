@@ -1,95 +1,91 @@
 # Portfolio & Blog (Astro + Tailwind CSS)
 
-A lightweight, performance-first portfolio and bilingual blog built as a static Astro website.
+A lightweight, performance-first portfolio and bilingual (EN/DE) blog built as a static Astro site, deployed to Netlify via GitHub Actions.
 
----
+## Stack
+
+* **Framework**: Astro 5 (static output)
+* **Styling**: Tailwind CSS 3
+* **Fonts**: Self-hosted Newsreader + Inter via `@fontsource`
+* **Content**: Markdown in `src/data/blog/`, schema-validated site content in `src/data/site-content.*.json`
+* **i18n**: `en` (default, root) and `de` (under `/de/`), with translation linking via `translationKey`
+* **SEO**: Per-page metadata, JSON-LD structured data, sitemap, RSS feeds (`/rss.xml`, `/de/rss.xml`)
+* **Testing**: Vitest
+* **Package manager**: pnpm 11 via Corepack
+* **Runtime**: Node.js 22
 
 ## Quick Start
 
-### 1. Setup Dependencies
-Ensure you have Node.js 22 installed, then run:
 ```bash
-pnpm install
+pnpm install        # install dependencies
+pnpm run dev        # start dev server at http://localhost:4321
+pnpm run check      # lint + typecheck + tests + production build
+pnpm run build      # production build into dist/
 ```
 
-### 2. Local Development
-Start the local server with hot module reloading (HMR):
-```bash
-pnpm run dev
-```
-Open [http://localhost:4321](http://localhost:4321) in your browser.
-
-### 3. Build & Quality Checks
-Run quality checks (eslint, typescript verification, unit tests, and production build):
-```bash
-pnpm run check
-```
-This builds your static files under `/dist`.
-
----
+`PUBLIC_SITE_URL` is required for production/CI builds. Local `dev` and `build` fall back to `http://localhost:4321` when unset.
 
 ## Writing Blog Posts
 
-Blog posts are stored as Markdown files in `src/data/blog/`.
+Posts live as Markdown files in `src/data/blog/` and are validated against the schema in `src/content.config.ts`.
 
-### 1. Create a New Post
-Use the helper script to generate a new post with the correct headers:
+### Create a new post
 
-* **English Post** (Default):
-  ```bash
-  pnpm run new-post "My First English Blog"
-  ```
-* **German Post**:
-  ```bash
-  pnpm run new-post "Mein deutscher Blog" -- --lang=de
-  ```
+```bash
+pnpm run new-post "My First English Blog"             # English (default)
+pnpm run new-post "Mein deutscher Blog" -- --lang=de  # German
+```
 
-This creates a draft file in `src/data/blog/<slug>.md` with a pre-configured template.
+This creates `src/data/blog/<slug>.md` with a frontmatter template.
 
-### 2. Post Frontmatter Fields
-The generated markdown header contains the following fields:
+### Frontmatter
+
 ```yaml
 ---
 title: "My First English Blog"
 description: "Brief summary of the blog post."
 publishedAt: 2026-05-21
-language: "en"             # "en" or "de"
-tags: []                   # e.g., ["Astro", "WebDev"]
-draft: true                # true (hidden in production) or false (published)
-translationKey: "my-first-post" # (Optional) Used to link EN and DE versions
+language: "en"                  # "en" or "de"
+tags: []                        # e.g., ["Astro", "WebDev"]
+draft: true                     # drafts are hidden in production
+translationKey: "my-first-post" # (optional) links EN ↔ DE versions
 ---
 ```
 
-### 3. Linking Translated Posts
-To link an English post and a German post as translations of each other:
-1. Generate both posts (one with `--lang=en`, one with `--lang=de`).
-2. Add the **exact same** `translationKey` string to both frontmatter headers.
-3. The site will automatically display a language switcher link on the blog page.
+### Linking translated posts
 
----
+Give the EN and DE versions the **same** `translationKey`. The blog page then shows a language switcher between them.
 
-## CI/CD & Deployments
+### Publishing
 
-GitHub Actions is the production deployment gate. Pull requests run verification only. Pushes to `main` run verification first, then deploy `dist/` to Netlify with the pinned `netlify-cli` dev dependency.
+Flip `draft: true` to `draft: false` and push to `main`.
 
-### 1. Continuous Integration (GitHub Actions)
-Every time you open a Pull Request or push to `main`, GitHub Actions triggers the workflow defined in `.github/workflows/ci.yml`. It runs:
-* Linting (`eslint`)
-* Astro typechecking (`astro check`)
-* Unit tests (`vitest`)
-* Production build check
-* Dependency audit, OSV Scanner, Semgrep, and TruffleHog
+## CI/CD
 
-If any check fails, you will receive an alert on GitHub.
+GitHub Actions (`.github/workflows/ci.yml`) is the single production deploy path. Netlify's Git auto-deploys must be disabled in the Netlify UI.
 
-### 2. Deployment (Netlify)
-The site is configured to compile to `dist/` as defined in `netlify.toml`.
+```diagram
+╭──────────────╮          ╭───────────────────────────────────────╮
+│ Pull request │ ───────▶ │ verify: lint, typecheck, tests,       │
+╰──────────────╯          │ build, audit, OSV, Semgrep, TruffleHog│
+                          ╰───────────────────────────────────────╯
+╭───────────────╮         ╭───────────────────╮     ╭────────────────────────╮
+│ Push to main  │ ──────▶ │ verify (as above) │ ──▶ │ deploy: download dist/ │
+╰───────────────╯         │ + upload dist/    │     │ artifact, netlify-cli  │
+                          ╰───────────────────╯     │ deploy --prod          │
+                                                    ╰────────────────────────╯
+```
 
-Required GitHub repository configuration:
+The `dist/` artifact built during `verify` is reused by `deploy`, so production is never built twice and the deployed bundle is byte-identical to the one that passed quality gates.
 
-* Variable: `PUBLIC_SITE_URL`
-* Secrets: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`
+### Required repository configuration
 
-Disable Netlify automatic Git deploys in the Netlify UI so GitHub Actions remains the single production deploy path and pushes to `main` do not produce double deploys.
+* **Variable** (`Settings → Secrets and variables → Actions → Variables`):
+  * `PUBLIC_SITE_URL` — e.g. `https://example.com`
+* **Secrets** (`Settings → Secrets and variables → Actions → Secrets`):
+  * `NETLIFY_AUTH_TOKEN`
+  * `NETLIFY_SITE_ID`
 
-* **To Publish a Draft**: Change `draft: true` to `draft: false` in your markdown file, then push to GitHub.
+### Netlify configuration
+
+`netlify.toml` only holds runtime HTTP headers (CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy, immutable cache for `/_astro/*`). The build itself runs in GitHub Actions; `netlify deploy --dir=dist` only uploads the prebuilt output.
