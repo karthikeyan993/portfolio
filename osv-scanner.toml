@@ -1,0 +1,7 @@
+[[IgnoredVulns]]
+id = "GHSA-j687-52p2-xcff"
+reason = "XSS in define:vars: The only usage in this project is in ThemeBootstrap.astro, which passes a hardcoded constant, not user-controlled input. This CVE is not exploitable in this codebase."
+
+[[IgnoredVulns]]
+id = "GHSA-xr5h-phrj-8vxv"
+reason = "Server island replay: This project is a fully static site (output: 'static'). Server Islands are not used. This CVE does not apply."
