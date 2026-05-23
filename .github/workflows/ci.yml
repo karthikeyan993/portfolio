@@ -34,9 +34,10 @@ jobs:
         run: pnpm audit --audit-level=high
 
       - name: OSV-Scanner (Google vulnerability database)
-        uses: google/osv-scanner-action@v2.3.8
-        with:
-          scan-args: --lockfile=pnpm-lock.yaml
+        run: |
+          curl -sSL https://github.com/google/osv-scanner/releases/download/v2.3.8/osv-scanner_linux_amd64 -o osv-scanner
+          chmod +x osv-scanner
+          ./osv-scanner --lockfile=pnpm-lock.yaml
 
       # --- Code Security (SAST) ---
       - name: Semgrep OSS (static analysis)
