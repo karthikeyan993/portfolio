@@ -1,7 +1,3 @@
-[build]
-  command = "pnpm run build"
-  publish = "dist"
-
 [[headers]]
   for = "/*"
   [headers.values]
