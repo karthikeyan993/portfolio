@@ -49,7 +49,7 @@ jobs:
       - name: TruffleHog (secret scanning)
         uses: trufflesecurity/trufflehog@main
         with:
-          base: ${{ github.event.repository.default_branch }}
+          base: ""
           head: HEAD
           extra_args: --only-verified
 
