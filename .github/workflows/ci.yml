@@ -8,23 +8,31 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build-test-scan-deploy:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0 # Required for TruffleHog history scanning
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 20
-          cache: pnpm
+          node-version-file: .node-version
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.2.2 --activate
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -35,35 +43,79 @@ jobs:
 
       - name: OSV-Scanner (Google vulnerability database)
         run: |
-          curl -sSL https://github.com/google/osv-scanner/releases/download/v2.3.8/osv-scanner_linux_amd64 -o osv-scanner
+          curl -fsSL https://github.com/google/osv-scanner/releases/download/v2.3.8/osv-scanner_linux_amd64 -o osv-scanner
+          echo "bc98e15319ed0d515e3f9235287ba53cdc5535d576d24fd573978ecfe9ab92dc  osv-scanner" | sha256sum --check -
           chmod +x osv-scanner
           ./osv-scanner --config=osv-scanner.toml --lockfile=pnpm-lock.yaml
 
       # --- Code Security (SAST) ---
       - name: Semgrep OSS (static analysis)
-        uses: semgrep/semgrep-action@v1
+        uses: semgrep/semgrep-action@713efdd345f3035192eaa63f56867b88e63e4e5d
         with:
           config: auto
 
       # --- Secret Detection ---
-      - name: TruffleHog (secret scanning)
-        uses: trufflesecurity/trufflehog@main
+      - name: TruffleHog (pull request secret scanning)
+        if: github.event_name == 'pull_request'
+        uses: trufflesecurity/trufflehog@0ec3634f6cf66a61912a923fee9d20cc45633a67
         with:
-          base: ""
+          path: ./
+          base: ${{ github.event.pull_request.base.sha }}
           head: HEAD
           extra_args: --only-verified
+
+      - name: TruffleHog (push secret scanning)
+        if: github.event_name == 'push'
+        uses: trufflesecurity/trufflehog@0ec3634f6cf66a61912a923fee9d20cc45633a67
+        with:
+          path: ./
+          base: ${{ github.event.before }}
+          head: HEAD
+          extra_args: --only-verified
+
+      - name: Validate public site URL
+        run: |
+          test -n "$PUBLIC_SITE_URL" || { echo "PUBLIC_SITE_URL GitHub Actions variable is required."; exit 1; }
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
 
       # --- Quality Gates ---
       - name: Quality gates (Lint, Typecheck, Test, Build)
         run: pnpm run check
         env:
-          PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
 
-      # --- Deployment ---
+  deploy:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version-file: .node-version
+
+      - name: Enable pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@11.2.2 --activate
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build production site
+        run: pnpm run build
+        env:
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+
       - name: Deploy to Netlify
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: pnpm --package=netlify-cli dlx netlify deploy --dir=dist --prod
+        run: |
+          test -n "$NETLIFY_AUTH_TOKEN" || { echo "NETLIFY_AUTH_TOKEN secret is required."; exit 1; }
+          test -n "$NETLIFY_SITE_ID" || { echo "NETLIFY_SITE_ID secret is required."; exit 1; }
+          pnpm exec netlify deploy --dir=dist --prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}

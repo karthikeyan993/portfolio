@@ -1,6 +1,7 @@
 ---
 import type { PageSeo } from '@/lib/seo';
 import type { SiteContent } from '@/data/site-content.schema';
+import { serializeJsonForHtml } from '@/lib/serialize-json';
 
 interface Props {
   content: SiteContent;
@@ -41,5 +42,5 @@ const { content, title, description, ogType, pageSeo, publishedTime, updatedTime
 <link rel="canonical" href={pageSeo.canonicalUrl} />
 {pageSeo.alternateLinks.map((link) => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
 <link rel="alternate" type="application/rss+xml" title={`${content.common.blogLabel} RSS`} href={content.locale === 'de' ? '/de/rss.xml' : '/rss.xml'} />
-<script type="application/ld+json" set:html={JSON.stringify(pageSeo.structuredData)} />
+<script is:inline type="application/ld+json" set:html={serializeJsonForHtml(pageSeo.structuredData)} />
 <title>{title}</title>

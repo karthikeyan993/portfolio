@@ -1,0 +1,15 @@
+overrides:
+  esbuild: ^0.25.0
+  yaml: ^2.8.3
+
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+blockExoticSubdeps: true
+dangerouslyAllowAllBuilds: false
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: true
+  netlify-cli: true
+  sharp: false
+  unix-dgram: false

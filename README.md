@@ -4,31 +4,31 @@ A lightweight, performance-first portfolio and bilingual blog built as a static 
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Setup Dependencies
-Ensure you have Node.js (version 20+) installed, then run:
+Ensure you have Node.js 22 installed, then run:
 ```bash
-npm install
+pnpm install
 ```
 
 ### 2. Local Development
 Start the local server with hot module reloading (HMR):
 ```bash
-npm run dev
+pnpm run dev
 ```
 Open [http://localhost:4321](http://localhost:4321) in your browser.
 
 ### 3. Build & Quality Checks
 Run quality checks (eslint, typescript verification, unit tests, and production build):
 ```bash
-npm run check
+pnpm run check
 ```
 This builds your static files under `/dist`.
 
 ---
 
-## ✍️ Writing Blog Posts
+## Writing Blog Posts
 
 Blog posts are stored as Markdown files in `src/data/blog/`.
 
@@ -37,11 +37,11 @@ Use the helper script to generate a new post with the correct headers:
 
 * **English Post** (Default):
   ```bash
-  npm run new-post "My First English Blog"
+  pnpm run new-post "My First English Blog"
   ```
 * **German Post**:
   ```bash
-  npm run new-post "Mein deutscher Blog" -- --lang=de
+  pnpm run new-post "Mein deutscher Blog" -- --lang=de
   ```
 
 This creates a draft file in `src/data/blog/<slug>.md` with a pre-configured template.
@@ -68,25 +68,9 @@ To link an English post and a German post as translations of each other:
 
 ---
 
-## 🛠️ CI/CD & Deployments
+## CI/CD & Deployments
 
-Deployments and checks are fully automated through Git.
-
-```
-                  ┌──────────────────────┐
-                  │ Push to GitHub Main  │
-                  └──────────┬───────────┘
-                             │
-              ┌──────────────┴──────────────┐
-              ▼                             ▼
-   ┌────────────────────┐        ┌─────────────────────┐
-   │ GitHub Actions     │        │ Netlify             │
-   │ (Runs Quality Gate)│        │ (Deploys Production)│
-   │ - ESLint           │        │ - npm run build     │
-   │ - Astro Typecheck  │        │ - Publishes /dist   │
-   │ - Vitest Tests     │        └─────────────────────┘
-   └────────────────────┘
-```
+GitHub Actions is the production deployment gate. Pull requests run verification only. Pushes to `main` run verification first, then deploy `dist/` to Netlify with the pinned `netlify-cli` dev dependency.
 
 ### 1. Continuous Integration (GitHub Actions)
 Every time you open a Pull Request or push to `main`, GitHub Actions triggers the workflow defined in `.github/workflows/ci.yml`. It runs:
@@ -94,11 +78,18 @@ Every time you open a Pull Request or push to `main`, GitHub Actions triggers th
 * Astro typechecking (`astro check`)
 * Unit tests (`vitest`)
 * Production build check
+* Dependency audit, OSV Scanner, Semgrep, and TruffleHog
 
 If any check fails, you will receive an alert on GitHub.
 
 ### 2. Deployment (Netlify)
-The site is configured to compile to `dist/` as defined in `netlify.toml`. 
+The site is configured to compile to `dist/` as defined in `netlify.toml`.
 
-* **Automatic Deploys**: When you push changes to the `main` branch, Netlify automatically pulls the latest changes, runs the build command, and deploys the update.
+Required GitHub repository configuration:
+
+* Variable: `PUBLIC_SITE_URL`
+* Secrets: `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID`
+
+Disable Netlify automatic Git deploys in the Netlify UI so GitHub Actions remains the single production deploy path and pushes to `main` do not produce double deploys.
+
 * **To Publish a Draft**: Change `draft: true` to `draft: false` in your markdown file, then push to GitHub.
