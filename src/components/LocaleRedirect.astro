@@ -4,6 +4,10 @@
   (() => {
     const LOCALE_KEY = 'locale';
     const storedLocale = localStorage.getItem(LOCALE_KEY);
+    if (storedLocale === 'de' && window.location.pathname === '/') {
+      window.location.replace('/de/');
+      return;
+    }
     if (storedLocale) return;
     const browserLocale = navigator.language || '';
     if (browserLocale.toLowerCase().startsWith('de') && window.location.pathname === '/') {

@@ -6,9 +6,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Icon from '@/components/Icon.astro';
 import Prose from '@/components/Prose.astro';
 import { getSiteContent } from '@/data/site-content';
-import type { Locale } from '@/data/site-content.schema';
-import { filterPublishedPosts, filterPostsByLocale, formatPostDate, getBlogPath, getLanguageLabel, getReadingTime, sortPostsByPublishedDate, getPostPath } from '@/lib/blog';
-import type { BlogPost } from '@/lib/blog';
+import { filterPublishedPosts, filterPostsByLocale, formatPostDate, getBlogPath, getLanguageLabel, getReadingTime, sortPostsByPublishedDate, getPostAlternatePaths } from '@/lib/blog';
 import { getHomeAnchor } from '@/lib/i18n';
 
 export async function getStaticPaths() {
@@ -30,14 +28,7 @@ const blogPath = getBlogPath('de');
 const contactPath = getHomeAnchor('contact', 'de');
 
 const allPosts = await getCollection('blog');
-const alternatePaths: Partial<Record<Locale, string>> = { [post.data.language]: getPostPath(post, post.data.language as Locale) };
-
-if (post.data.translationKey) {
-  const translations = allPosts.filter((p: BlogPost) => p.data.translationKey === post.data.translationKey && p.id !== post.id);
-  translations.forEach((t: BlogPost) => {
-    alternatePaths[t.data.language as Locale] = getPostPath(t, t.data.language as Locale);
-  });
-}
+const alternatePaths = getPostAlternatePaths(post, allPosts);
 ---
 
 <BaseLayout

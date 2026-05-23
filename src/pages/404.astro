@@ -3,22 +3,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import ButtonLink from '@/components/ButtonLink.astro';
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getBlogPath } from '@/lib/blog';
+import { getSiteContent } from '@/data/site-content';
 
+const content = getSiteContent('en');
 const homePath = getRelativeLocaleUrl('en', '/');
 const blogPath = getBlogPath('en');
 ---
 
-<BaseLayout title="Page not found" description="The page you requested could not be found." noindex>
+<BaseLayout title="Page not found" description={content.common.notFoundDescription} noindex>
   <section class="flex min-h-[70vh] items-center px-4 py-24">
     <div class="panel mx-auto max-w-3xl p-8 text-center md:p-12">
       <p class="eyebrow mb-4">404</p>
       <h1 class="font-heading text-4xl font-semibold tracking-[-0.04em] text-text md:text-5xl">
-        This page is off the map.
+        {content.common.notFoundTitle}
       </h1>
-      <p class="mt-4 text-text-muted">The link may be broken, or the page may have moved.</p>
+      <p class="mt-4 text-text-muted">{content.common.notFoundDescription}</p>
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <ButtonLink href={homePath}>Back home</ButtonLink>
-        <ButtonLink href={blogPath} variant="secondary">Read the blog</ButtonLink>
+        <ButtonLink href={homePath}>{content.common.notFoundHomeLabel}</ButtonLink>
+        <ButtonLink href={blogPath} variant="secondary">{content.common.notFoundBlogLabel}</ButtonLink>
       </div>
     </div>
   </section>

@@ -36,7 +36,7 @@ const showProjects = hasProjectsContent(content.projects);
 {hasExperienceContent(content.experience) ? <Experience content={content.experience} /> : null}
 {hasTechStackContent(content.techStack) ? <TechStack content={content.techStack} /> : null}
 {/* Toggle project sections with `enabled` in `src/data/site-content.*.json` when projects are ready. */}
-{showFeaturedProject ? <FeaturedProject content={content.featuredProject} /> : null}
+{showFeaturedProject ? <FeaturedProject content={content.featuredProject} liveLabel={content.common.viewLiveProjectLabel} sourceLabel={content.common.viewSourceLabel} /> : null}
 {showProjects ? <Projects content={content.projects} ctaLabel={content.common.viewProjectLabel} /> : null}
 {hasWritingContent(content.writing, posts.length) ? <LatestWriting content={content} posts={posts} /> : null}
 {hasContactContent(content.contact) ? <NetlifyContactForm content={content} /> : null}

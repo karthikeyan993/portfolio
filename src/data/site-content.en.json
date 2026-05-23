@@ -212,6 +212,8 @@
   "common": {
     "homeLabel": "Home",
     "blogLabel": "Blog",
+    "skipToContentLabel": "Skip to content",
+    "scrollToTopLabel": "Scroll to top",
     "languageLabel": "Language",
     "themeLightLabel": "Light",
     "themeDarkLabel": "Dark",
@@ -226,6 +228,16 @@
     "postContactTitle": "Want to talk about this?",
     "postContactDescription": "Send a note from the contact section or connect through the social links below.",
     "postContactCtaLabel": "Go to contact",
-    "viewProjectLabel": "View Project"
+    "viewProjectLabel": "View Project",
+    "viewLiveProjectLabel": "Explore Live",
+    "viewSourceLabel": "View Source",
+    "fieldRequiredMessage": "Please enter your {field}.",
+    "nameMinLengthMessage": "Please enter at least 2 characters for your name.",
+    "emailInvalidMessage": "Please enter a valid email address, for example: name@example.com.",
+    "messageMinLengthMessage": "Please add a bit more detail to your message (at least 10 characters).",
+    "notFoundTitle": "This page is off the map.",
+    "notFoundDescription": "The link may be broken, or the page may have moved.",
+    "notFoundHomeLabel": "Back home",
+    "notFoundBlogLabel": "Read the blog"
   }
 }

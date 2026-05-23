@@ -12,13 +12,14 @@ interface Props {
   content: SiteContent;
   locale: Locale;
   currentPath: string;
+  alternatePath?: string;
 }
 
-const { content, locale, currentPath } = Astro.props;
+const { content, locale, currentPath, alternatePath } = Astro.props;
 const homePath = getRelativeLocaleUrl(locale, '/');
 const isHome = currentPath === homePath;
 const alternateLocale = getAlternateLocale(locale);
-const alternateUrl = getRelativeLocaleUrl(alternateLocale, '/');
+const alternateUrl = alternatePath ?? getRelativeLocaleUrl(alternateLocale, '/');
 const homeLink = getHeaderHomeLink(content.common.homeLabel, locale, isHome);
 const blogPath = getBlogPath(locale);
 const isBlog = currentPath.startsWith(blogPath);

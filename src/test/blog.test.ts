@@ -6,6 +6,7 @@ import {
   formatPostDate,
   getBlogPath,
   getLatestPosts,
+  getPostAlternatePaths,
   getPostPath,
   getReadingTime,
   sortPostsByPublishedDate,
@@ -16,11 +17,13 @@ const makePost = ({
   draft = false,
   language = 'en',
   publishedAt,
+  translationKey,
 }: {
   id: string;
   draft?: boolean;
   language?: 'en' | 'de';
   publishedAt: string;
+  translationKey?: string;
 }) =>
   ({
     id,
@@ -31,6 +34,7 @@ const makePost = ({
       title: id,
       description: id,
       tags: [],
+      translationKey,
     },
   }) as unknown as BlogPost;
 
@@ -87,6 +91,21 @@ describe('blog helpers', () => {
     expect(getPostPath(post, 'en')).toBe('/blog/hello-world/');
     expect(getBlogPath('de')).toBe('/de/blog/');
     expect(getPostPath(post, 'de')).toBe('/de/blog/hello-world/');
+  });
+
+  it('builds translated post alternates without unpublished drafts', () => {
+    const post = makePost({ id: 'hello', publishedAt: '2024-01-01T00:00:00.000Z', translationKey: 'hello' });
+    const publishedTranslation = makePost({ id: 'hallo', publishedAt: '2024-01-02T00:00:00.000Z', language: 'de', translationKey: 'hello' });
+    const draftTranslation = makePost({ id: 'draft', publishedAt: '2024-01-03T00:00:00.000Z', language: 'de', translationKey: 'hello', draft: true });
+
+    const alternates = getPostAlternatePaths(post, [post, publishedTranslation, draftTranslation]);
+
+    if (import.meta.env.DEV) {
+      expect(alternates).toEqual({ en: '/blog/hello/', de: '/de/blog/draft/' });
+      return;
+    }
+
+    expect(alternates).toEqual({ en: '/blog/hello/', de: '/de/blog/hallo/' });
   });
 
   it('formats reading metadata', () => {

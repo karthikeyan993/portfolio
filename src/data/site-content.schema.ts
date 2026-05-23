@@ -176,6 +176,8 @@ const resumeSchema = z.object({
 const commonSchema = z.object({
   homeLabel: z.string().min(1),
   blogLabel: z.string().min(1),
+  skipToContentLabel: z.string().min(1),
+  scrollToTopLabel: z.string().min(1),
   languageLabel: z.string().min(1),
   themeLightLabel: z.string().min(1),
   themeDarkLabel: z.string().min(1),
@@ -191,6 +193,16 @@ const commonSchema = z.object({
   postContactDescription: z.string().min(1),
   postContactCtaLabel: z.string().min(1),
   viewProjectLabel: z.string().min(1),
+  viewLiveProjectLabel: z.string().min(1),
+  viewSourceLabel: z.string().min(1),
+  fieldRequiredMessage: z.string().min(1),
+  nameMinLengthMessage: z.string().min(1),
+  emailInvalidMessage: z.string().min(1),
+  messageMinLengthMessage: z.string().min(1),
+  notFoundTitle: z.string().min(1),
+  notFoundDescription: z.string().min(1),
+  notFoundHomeLabel: z.string().min(1),
+  notFoundBlogLabel: z.string().min(1),
 });
 
 export const siteContentSchema = z.object({

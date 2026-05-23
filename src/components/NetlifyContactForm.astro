@@ -69,6 +69,10 @@ const showContactPanel = content.contact.formEnabled || showSuccess || contactLi
           method="POST"
           data-netlify="true"
           data-contact-form
+          data-required-message={content.common.fieldRequiredMessage}
+          data-name-min-length-message={content.common.nameMinLengthMessage}
+          data-email-invalid-message={content.common.emailInvalidMessage}
+          data-message-min-length-message={content.common.messageMinLengthMessage}
           netlify-honeypot="bot-field"
           action={formAction}
           class="mt-6 space-y-4 first:mt-0"
@@ -165,10 +169,10 @@ const showContactPanel = content.contact.formEnabled || showSuccess || contactLi
       const value = field.value.trim();
       const label = getLabel(field);
 
-      if (!value) return `Please enter your ${label.toLowerCase()}.`;
-      if (field.name === 'name' && value.length < 2) return 'Please enter at least 2 characters for your name.';
-      if (field.name === 'email' && field.validity.typeMismatch) return 'Please enter a valid email address, for example: name@example.com.';
-      if (field.name === 'message' && value.length < 10) return 'Please add a bit more detail to your message (at least 10 characters).';
+      if (!value) return form.dataset.requiredMessage?.replace('{field}', label.toLowerCase()) || '';
+      if (field.name === 'name' && value.length < 2) return form.dataset.nameMinLengthMessage || '';
+      if (field.name === 'email' && field.validity.typeMismatch) return form.dataset.emailInvalidMessage || '';
+      if (field.name === 'message' && value.length < 10) return form.dataset.messageMinLengthMessage || '';
       return '';
     };
 

@@ -212,6 +212,8 @@
   "common": {
     "homeLabel": "Start",
     "blogLabel": "Blog",
+    "skipToContentLabel": "Zum Inhalt springen",
+    "scrollToTopLabel": "Nach oben scrollen",
     "languageLabel": "Sprache",
     "themeLightLabel": "Hell",
     "themeDarkLabel": "Dunkel",
@@ -226,6 +228,16 @@
     "postContactTitle": "Möchtest du darüber sprechen?",
     "postContactDescription": "Schreib mir über den Kontaktbereich oder über die Social-Links.",
     "postContactCtaLabel": "Zum Kontakt",
-    "viewProjectLabel": "Projekt ansehen"
+    "viewProjectLabel": "Projekt ansehen",
+    "viewLiveProjectLabel": "Live ansehen",
+    "viewSourceLabel": "Quellcode ansehen",
+    "fieldRequiredMessage": "Bitte geben Sie {field} ein.",
+    "nameMinLengthMessage": "Bitte geben Sie mindestens 2 Zeichen für Ihren Namen ein.",
+    "emailInvalidMessage": "Bitte geben Sie eine gültige E-Mail-Adresse ein, zum Beispiel: name@example.com.",
+    "messageMinLengthMessage": "Bitte ergänzen Sie Ihre Nachricht etwas ausführlicher (mindestens 10 Zeichen).",
+    "notFoundTitle": "Diese Seite ist nicht auffindbar.",
+    "notFoundDescription": "Der Link ist möglicherweise defekt oder die Seite wurde verschoben.",
+    "notFoundHomeLabel": "Zur Startseite",
+    "notFoundBlogLabel": "Zum Blog"
   }
 }

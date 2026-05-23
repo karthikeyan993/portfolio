@@ -39,6 +39,8 @@ const {
 } = Astro.props;
 
 const pageSeo = buildPageSeo({ baseUrl: Astro.site ?? Astro.url.origin, content, currentPath, description, image, locale, noindex, ogType, publishedTime, tags, title, updatedTime, alternatePaths });
+const alternateLocale = locale === 'en' ? 'de' : 'en';
+const headerAlternatePath = alternatePaths?.[alternateLocale];
 ---
 
 <!doctype html>
@@ -52,12 +54,12 @@ const pageSeo = buildPageSeo({ baseUrl: Astro.site ?? Astro.url.origin, content,
     {enableLocaleRedirect ? <LocaleRedirect /> : null}
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
+    <a href="#main-content" class="skip-link">{content.common.skipToContentLabel}</a>
     <div class="min-h-screen">
-      <Header content={content} locale={locale} currentPath={currentPath} />
+      <Header content={content} locale={locale} currentPath={currentPath} alternatePath={headerAlternatePath} />
       <main id="main-content" tabindex="-1"><slot /></main>
       <SiteFooter content={content} locale={locale} />
-      <ScrollToTopButton />
+      <ScrollToTopButton label={content.common.scrollToTopLabel} />
     </div>
   </body>
 </html>

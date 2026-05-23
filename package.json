@@ -13,9 +13,10 @@
     "preview": "astro preview",
     "typecheck": "astro check",
     "lint": "eslint .",
+    "validate-content": "node scripts/validate-content.js",
     "test": "vitest run",
     "new-post": "node scripts/new-post.js",
-    "check": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build"
+    "check": "pnpm run lint && pnpm run validate-content && pnpm run typecheck && pnpm run test && pnpm run build"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",

@@ -7,10 +7,12 @@ import type { FeaturedProjectContent } from '@/data/site-content.schema';
 
 interface Props {
   content: FeaturedProjectContent;
+  liveLabel: string;
+  sourceLabel: string;
   tinted?: boolean;
 }
 
-const { content, tinted = false } = Astro.props;
+const { content, liveLabel, sourceLabel, tinted = false } = Astro.props;
 const tags = content.tags.filter((tag) => tag.trim());
 ---
 
@@ -40,12 +42,12 @@ const tags = content.tags.filter((tag) => tag.trim());
         <div class="mt-12 flex flex-wrap gap-4">
           {content.links.live ? (
             <ButtonLink href={content.links.live} class="gap-2">
-              Explore Live <Icon name="arrow-down-right" size={17} />
+              {liveLabel} <Icon name="arrow-down-right" size={17} />
             </ButtonLink>
           ) : null}
           {content.links.source ? (
             <ButtonLink href={content.links.source} variant="secondary" class="gap-2">
-              View Source
+              {sourceLabel}
             </ButtonLink>
           ) : null}
         </div>

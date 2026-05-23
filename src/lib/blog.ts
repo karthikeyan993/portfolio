@@ -59,3 +59,20 @@ export const formatPostDate = (date: Date, locale: Locale) => {
 
 export const getBlogPath = (locale: Locale) => getRelativeLocaleUrl(locale, '/blog/');
 export const getPostPath = (post: Pick<BlogPost, 'id'>, locale: Locale) => getRelativeLocaleUrl(locale, `/blog/${post.id}/`);
+
+export const getPostAlternatePaths = (post: BlogPost, posts: BlogPost[]) => {
+  const alternatePaths: Partial<Record<Locale, string>> = {
+    [post.data.language]: getPostPath(post, post.data.language),
+  };
+
+  if (!post.data.translationKey) return alternatePaths;
+
+  filterPublishedPosts(posts)
+    .filter((candidate) => candidate.data.translationKey === post.data.translationKey && candidate.id !== post.id)
+    .forEach((translation) => {
+      const language = translation.data.language as Locale;
+      alternatePaths[language] = getPostPath(translation, language);
+    });
+
+  return alternatePaths;
+};
