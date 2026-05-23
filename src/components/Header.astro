@@ -148,7 +148,9 @@ const navLinks = getHeaderNavLinks(
 </header>
 
 <script>
-  import { STORAGE_KEYS } from '@/lib/constants';
+  // Inlined from '@/lib/constants' to avoid an extra network-chain hop.
+  // Keep keys in sync with src/lib/constants.ts STORAGE_KEYS.
+  const STORAGE_KEYS = { theme: 'theme', locale: 'locale' } as const;
 
   function setupHeader() {
     const trigger = document.getElementById('mobile-menu-trigger');

@@ -1,11 +1,13 @@
 <script>
-  import { STORAGE_KEYS } from '@/lib/constants';
+  // Inlined locale key from '@/lib/constants' to avoid an extra network-chain hop.
+  // Keep in sync with src/lib/constants.ts STORAGE_KEYS.locale.
   (() => {
-    const storedLocale = localStorage.getItem(STORAGE_KEYS.locale);
+    const LOCALE_KEY = 'locale';
+    const storedLocale = localStorage.getItem(LOCALE_KEY);
     if (storedLocale) return;
     const browserLocale = navigator.language || '';
     if (browserLocale.toLowerCase().startsWith('de') && window.location.pathname === '/') {
-      localStorage.setItem(STORAGE_KEYS.locale, 'de');
+      localStorage.setItem(LOCALE_KEY, 'de');
       window.location.replace('/de/');
     }
   })();
