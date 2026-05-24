@@ -17,7 +17,12 @@ const blogPath = getBlogPath(content.locale);
 ---
 
 <Section id="writing" tinted containerClass="max-w-7xl">
-  <SectionHeading eyebrow={content.writing.eyebrow} title={content.writing.title} description={content.writing.description} />
+  <SectionHeading
+    eyebrow={content.writing.eyebrow}
+    title={content.writing.title}
+    description={content.writing.description}
+    size="compact"
+  />
 
   <div class="grid gap-4">
     {posts.map((post) => (

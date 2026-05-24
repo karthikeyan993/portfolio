@@ -3,15 +3,17 @@ interface Props {
   eyebrow?: string;
   title: string;
   description?: string;
+  size?: 'default' | 'compact';
 }
 
-const { eyebrow, title, description } = Astro.props;
+const { eyebrow, title, description, size = 'default' } = Astro.props;
+const isCompact = size === 'compact';
 ---
 
-<div class="mb-12 max-w-4xl">
-  {eyebrow ? <p class="eyebrow mb-4">{eyebrow}</p> : null}
-  <h2 class="headline-xl text-brand-primary">
+<div class:list={['max-w-4xl', isCompact ? 'mb-6 md:mb-8' : 'mb-8 md:mb-12']}>
+  {eyebrow ? <p class:list={['eyebrow', isCompact ? 'mb-3' : 'mb-4']}>{eyebrow}</p> : null}
+  <h2 class:list={[isCompact ? 'headline-md' : 'headline-xl', 'text-brand-primary']}>
     {title}
   </h2>
-  {description ? <p class="mt-6 max-w-2xl body-lg text-text-muted">{description}</p> : null}
+  {description ? <p class:list={['max-w-2xl body-lg text-text-muted', isCompact ? 'mt-4' : 'mt-6']}>{description}</p> : null}
 </div>

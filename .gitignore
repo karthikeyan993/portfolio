@@ -37,6 +37,7 @@ Thumbs.db
 *.sw?
 
 # AI Assistant / Agent files
+AGENTS.md
 .cursor/
 .cline/
 .copilot/

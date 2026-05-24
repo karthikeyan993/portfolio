@@ -19,7 +19,7 @@ const tags = content.tags.filter((tag) => tag.trim());
 <Section tinted={tinted}>
   <SectionHeading eyebrow={content.eyebrow} title={content.sectionTitle} />
 
-  <article class="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+  <article class="grid gap-8 lg:gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
     <div class="project-placeholder relative flex aspect-[4/3] items-center justify-center border border-border bg-elevated overflow-hidden md:aspect-video lg:aspect-[4/5]">
       <span class="display-hero text-text-muted/10 absolute -bottom-4 -left-4 select-none">{content.title.charAt(0)}</span>
       <div class="relative z-10 text-center">
@@ -28,18 +28,18 @@ const tags = content.tags.filter((tag) => tag.trim());
     </div>
 
     <div class="lg:pl-12">
-      <div class="pt-8">
+      <div class="md:pt-8">
         <p class="eyebrow">{content.badge}</p>
         <h3 class="mt-4 headline-xl text-brand-primary">{content.title}</h3>
-        <p class="mt-8 body-lg text-text-muted leading-relaxed">{content.summary}</p>
+        <p class="mt-6 md:mt-8 body-lg text-text-muted leading-relaxed">{content.summary}</p>
 
         {tags.length > 0 ? (
-          <div class="mt-10 flex flex-wrap gap-2">
+          <div class="mt-8 md:mt-10 flex flex-wrap gap-2">
             {tags.map((tech) => <span class="tag">{tech}</span>)}
           </div>
         ) : null}
 
-        <div class="mt-12 flex flex-wrap gap-4">
+        <div class="mt-8 md:mt-12 flex flex-wrap gap-4">
           {content.links.live ? (
             <ButtonLink href={content.links.live} class="gap-2">
               {liveLabel} <Icon name="arrow-down-right" size={17} />

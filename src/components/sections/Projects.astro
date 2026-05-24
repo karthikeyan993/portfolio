@@ -19,9 +19,9 @@ const projects = content.items.filter((project) => project.title.trim() || proje
     {projects.map((project) => (
       <article class="group border-b border-border transition-colors hover:bg-elevated/30">
         {project.links.live || project.links.source ? (
-          <a href={project.links.live ?? project.links.source!} class="flex flex-col gap-4 py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
+          <a href={project.links.live ?? project.links.source!} class="flex flex-col gap-4 py-8 md:py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
             <div class="flex-1">
-              <h3 class="headline-md text-brand-primary transition-all group-hover:translate-x-2">
+              <h3 class="item-title text-brand-primary transition-all group-hover:translate-x-2">
                 {project.title}
               </h3>
               <p class="mt-4 max-w-2xl body-md text-text-muted">{project.summary}</p>
@@ -37,9 +37,9 @@ const projects = content.items.filter((project) => project.title.trim() || proje
             </div>
           </a>
         ) : (
-          <div class="flex flex-col gap-4 py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
+          <div class="flex flex-col gap-4 py-8 md:py-12 md:flex-row md:items-baseline md:justify-between md:gap-12">
             <div class="flex-1">
-              <h3 class="headline-md text-brand-primary">{project.title}</h3>
+              <h3 class="item-title text-brand-primary">{project.title}</h3>
               <p class="mt-4 max-w-2xl body-md text-text-muted">{project.summary}</p>
               {project.tags.length > 0 ? (
                 <div class="mt-6 flex flex-wrap gap-2">
